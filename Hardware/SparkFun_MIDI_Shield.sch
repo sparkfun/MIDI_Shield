@@ -21111,6 +21111,21 @@ We've spent an enormous amount of time creating and checking these footprints an
 &lt;br&gt;&lt;br&gt;
 You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
 <packages>
+<package name="SMA-DIODE">
+<description>&lt;B&gt;Diode&lt;/B&gt;&lt;p&gt;
+Basic SMA packaged diode. Good for reverse polarization protection. Common part #: MBRA140</description>
+<wire x1="-2.3" y1="1" x2="-2.3" y2="1.45" width="0.2032" layer="21"/>
+<wire x1="-2.3" y1="1.45" x2="2.3" y2="1.45" width="0.2032" layer="21"/>
+<wire x1="2.3" y1="1.45" x2="2.3" y2="1" width="0.2032" layer="21"/>
+<wire x1="2.3" y1="-1" x2="2.3" y2="-1.45" width="0.2032" layer="21"/>
+<wire x1="2.3" y1="-1.45" x2="-2.3" y2="-1.45" width="0.2032" layer="21"/>
+<wire x1="-2.3" y1="-1.45" x2="-2.3" y2="-1" width="0.2032" layer="21"/>
+<wire x1="1" y1="1" x2="1" y2="-1" width="0.2032" layer="21"/>
+<smd name="A" x="-2.15" y="0" dx="1.27" dy="1.47" layer="1" rot="R180"/>
+<smd name="C" x="2.15" y="0" dx="1.27" dy="1.47" layer="1"/>
+<text x="-2.286" y="1.651" size="0.4064" layer="25">&gt;NAME</text>
+<text x="0.254" y="1.651" size="0.4064" layer="27">&gt;VALUE</text>
+</package>
 <package name="8-SMD">
 <wire x1="-5" y1="-4" x2="4.69" y2="-4" width="0.1" layer="51"/>
 <wire x1="-5" y1="-4" x2="-5" y2="3.62" width="0.1" layer="51"/>
@@ -21131,23 +21146,24 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <smd name="4" x="3.66" y="-4.96" dx="1.3" dy="1.4" layer="1"/>
 <circle x="-6.3" y="-3.84" radius="0.381" width="0" layer="21"/>
 </package>
-<package name="SMA-DIODE">
-<description>&lt;B&gt;Diode&lt;/B&gt;&lt;p&gt;
-Basic SMA packaged diode. Good for reverse polarization protection. Common part #: MBRA140</description>
-<wire x1="-2.3" y1="1" x2="-2.3" y2="1.45" width="0.2032" layer="21"/>
-<wire x1="-2.3" y1="1.45" x2="2.3" y2="1.45" width="0.2032" layer="21"/>
-<wire x1="2.3" y1="1.45" x2="2.3" y2="1" width="0.2032" layer="21"/>
-<wire x1="2.3" y1="-1" x2="2.3" y2="-1.45" width="0.2032" layer="21"/>
-<wire x1="2.3" y1="-1.45" x2="-2.3" y2="-1.45" width="0.2032" layer="21"/>
-<wire x1="-2.3" y1="-1.45" x2="-2.3" y2="-1" width="0.2032" layer="21"/>
-<wire x1="1" y1="1" x2="1" y2="-1" width="0.2032" layer="21"/>
-<smd name="A" x="-2.15" y="0" dx="1.27" dy="1.47" layer="1" rot="R180"/>
-<smd name="C" x="2.15" y="0" dx="1.27" dy="1.47" layer="1"/>
-<text x="-2.286" y="1.651" size="0.4064" layer="25">&gt;NAME</text>
-<text x="0.254" y="1.651" size="0.4064" layer="27">&gt;VALUE</text>
-</package>
 </packages>
 <symbols>
+<symbol name="DIODE-SCHOTTKY">
+<wire x1="-1.27" y1="-1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="-1.27" y2="1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="1.27" x2="-1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="0" x2="-1.27" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="1.27" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="1.27" x2="1.778" y2="1.524" width="0.254" layer="94"/>
+<wire x1="1.27" y1="-1.27" x2="0.762" y2="-1.524" width="0.254" layer="94"/>
+<text x="2.54" y="0.4826" size="1.778" layer="95">&gt;NAME</text>
+<text x="2.54" y="-2.3114" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="A" x="-2.54" y="0" visible="off" length="point" direction="pas"/>
+<pin name="C" x="2.54" y="0" visible="off" length="point" direction="pas" rot="R180"/>
+<wire x1="-2.54" y1="0" x2="-1.27" y2="0" width="0.1524" layer="94"/>
+<wire x1="2.54" y1="0" x2="1.27" y2="0" width="0.1524" layer="94"/>
+</symbol>
 <symbol name="OPTO_DARLINGTON_6N138-39">
 <wire x1="-5.08" y1="-10.16" x2="7.62" y2="-10.16" width="0.254" layer="94"/>
 <wire x1="7.62" y1="-10.16" x2="7.62" y2="5.08" width="0.254" layer="94"/>
@@ -21165,54 +21181,16 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 <wire x1="-4.318" y1="-2.794" x2="-3.302" y2="-2.794" width="0.2032" layer="94"/>
 <wire x1="-3.302" y1="-2.794" x2="-3.302" y2="-7.62" width="0.2032" layer="94"/>
 <wire x1="-3.302" y1="-7.62" x2="-5.08" y2="-7.62" width="0.2032" layer="94"/>
-<text x="-5.842" y="6.35" size="1.778" layer="94">OPTO DARL</text>
-<text x="-3.556" y="-13.208" size="1.778" layer="94">&gt;VALUE</text>
+<text x="-3.302" y="5.588" size="1.778" layer="95">&gt;NAME</text>
+<text x="-3.556" y="-13.208" size="1.778" layer="96">&gt;VALUE</text>
 <pin name="C" x="-10.16" y="-7.62" length="middle"/>
 <pin name="A" x="-10.16" y="2.54" length="middle"/>
 <pin name="VCC" x="12.7" y="2.54" length="middle" rot="R180"/>
 <pin name="VOUT" x="12.7" y="-2.54" length="middle" rot="R180"/>
 <pin name="GND" x="12.7" y="-7.62" length="middle" rot="R180"/>
 </symbol>
-<symbol name="DIODE-SCHOTTKY">
-<wire x1="-1.27" y1="-1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
-<wire x1="1.27" y1="0" x2="-1.27" y2="1.27" width="0.254" layer="94"/>
-<wire x1="1.27" y1="1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
-<wire x1="-1.27" y1="1.27" x2="-1.27" y2="0" width="0.254" layer="94"/>
-<wire x1="-1.27" y1="0" x2="-1.27" y2="-1.27" width="0.254" layer="94"/>
-<wire x1="1.27" y1="0" x2="1.27" y2="-1.27" width="0.254" layer="94"/>
-<wire x1="1.27" y1="1.27" x2="1.778" y2="1.524" width="0.254" layer="94"/>
-<wire x1="1.27" y1="-1.27" x2="0.762" y2="-1.524" width="0.254" layer="94"/>
-<text x="2.54" y="0.4826" size="1.778" layer="95">&gt;NAME</text>
-<text x="2.54" y="-2.3114" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="A" x="-2.54" y="0" visible="off" length="point" direction="pas"/>
-<pin name="C" x="2.54" y="0" visible="off" length="point" direction="pas" rot="R180"/>
-<wire x1="-2.54" y1="0" x2="-1.27" y2="0" width="0.1524" layer="94"/>
-<wire x1="2.54" y1="0" x2="1.27" y2="0" width="0.1524" layer="94"/>
-</symbol>
 </symbols>
 <devicesets>
-<deviceset name="OPTO_DARL_6N138S">
-<description>Optoisolator, darlington pair output</description>
-<gates>
-<gate name="G$1" symbol="OPTO_DARLINGTON_6N138-39" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="8-SMD">
-<connects>
-<connect gate="G$1" pin="A" pad="2"/>
-<connect gate="G$1" pin="C" pad="3"/>
-<connect gate="G$1" pin="GND" pad="5"/>
-<connect gate="G$1" pin="VCC" pad="8"/>
-<connect gate="G$1" pin="VOUT" pad="6"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="IC-09482" constant="no"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
 <deviceset name="MBRA140" prefix="D">
 <description>40V, 1A Schottky rectifier&lt;br&gt;
 SMA/DO-214AC package&lt;br&gt;
@@ -21229,6 +21207,29 @@ DIO-08053</description>
 <technologies>
 <technology name="">
 <attribute name="PROD_ID" value="DIO-08053"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="OPTO_DARL_6N138S" prefix="U" uservalue="yes">
+<description>Optoisolator, darlington pair output</description>
+<gates>
+<gate name="G$1" symbol="OPTO_DARLINGTON_6N138-39" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="8-SMD">
+<connects>
+<connect gate="G$1" pin="A" pad="2"/>
+<connect gate="G$1" pin="C" pad="3"/>
+<connect gate="G$1" pin="GND" pad="5"/>
+<connect gate="G$1" pin="VCC" pad="8"/>
+<connect gate="G$1" pin="VOUT" pad="6"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="IC-09482" constant="no"/>
+<attribute name="VALUE" value="6N138M" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -21686,7 +21687,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="GND8" library="SparkFun" deviceset="GND" device=""/>
 <part name="S1" library="SparkFun-Electromechanical" deviceset="SWITCH-MOMENTARY-2" device="SMD" value="Reset"/>
 <part name="S2" library="SparkFun-Electromechanical" deviceset="SWITCH-SPDT" device="SMD" value="RUN/PROGRAM"/>
-<part name="U$1" library="SparkFun-DiscreteSemi" deviceset="OPTO_DARL_6N138S" device="" value="6N138M"/>
 <part name="JP3" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
 <part name="JP4" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
 <part name="JP1" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
@@ -21701,23 +21701,24 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="LOGO5" library="SparkFun-Aesthetics" deviceset="SFE_LOGO_FLAME" device=".1_INCH"/>
 <part name="SJ1" library="SparkFun-Passives" deviceset="JUMPER-PAD-3-2OF3_NC_BY_TRACE" device="_SMALL" value="TX sel"/>
 <part name="SJ2" library="SparkFun-Passives" deviceset="JUMPER-PAD-3-2OF3_NC_BY_TRACE" device="_SMALL" value="RX sel"/>
+<part name="U1" library="SparkFun-DiscreteSemi" deviceset="OPTO_DARL_6N138S" device="" value="6N138M"/>
 </parts>
 <sheets>
 <sheet>
 <plain>
-<text x="2.54" y="180.594" size="2.54" layer="94">MIDI IN</text>
-<text x="2.54" y="99.06" size="2.54" layer="94">MIDI OUT</text>
+<text x="2.54" y="180.594" size="2.54" layer="97">MIDI IN</text>
+<text x="2.54" y="99.06" size="2.54" layer="97">MIDI OUT</text>
 <text x="172.72" y="7.62" size="2.54" layer="94">Byron Jacquot</text>
 <text x="238.76" y="7.62" size="2.54" layer="94">V1.5</text>
 <wire x1="129.54" y1="185.42" x2="121.92" y2="185.42" width="0.3048" layer="94" style="shortdash"/>
-<wire x1="121.92" y1="185.42" x2="121.92" y2="104.14" width="0.3048" layer="94" style="shortdash"/>
-<wire x1="121.92" y1="104.14" x2="121.92" y2="30.48" width="0.3048" layer="94" style="shortdash"/>
-<wire x1="121.92" y1="30.48" x2="121.92" y2="0" width="0.3048" layer="94" style="shortdash"/>
-<wire x1="0" y1="104.14" x2="86.36" y2="104.14" width="0.3048" layer="94" style="shortdash"/>
-<text x="127" y="180.34" size="2.54" layer="94">Shield Connections and controls</text>
-<wire x1="86.36" y1="104.14" x2="121.92" y2="104.14" width="0.3048" layer="94" style="shortdash"/>
-<wire x1="0" y1="30.48" x2="86.36" y2="30.48" width="0.3048" layer="94" style="shortdash"/>
-<text x="2.54" y="25.4" size="1.778" layer="94" align="top-left">MIDI I/O reference design from:
+<wire x1="121.92" y1="185.42" x2="121.92" y2="104.14" width="0.3048" layer="97" style="shortdash"/>
+<wire x1="121.92" y1="104.14" x2="121.92" y2="30.48" width="0.3048" layer="97" style="shortdash"/>
+<wire x1="121.92" y1="30.48" x2="121.92" y2="0" width="0.3048" layer="97" style="shortdash"/>
+<wire x1="0" y1="104.14" x2="86.36" y2="104.14" width="0.3048" layer="97" style="shortdash"/>
+<text x="127" y="180.34" size="2.54" layer="97">Shield Connections and controls</text>
+<wire x1="86.36" y1="104.14" x2="121.92" y2="104.14" width="0.3048" layer="97" style="shortdash"/>
+<wire x1="0" y1="30.48" x2="86.36" y2="30.48" width="0.3048" layer="97" style="shortdash"/>
+<text x="2.54" y="25.4" size="1.778" layer="97" align="top-left">MIDI I/O reference design from:
 http://www.midi.org/techspecs/electrispec.php
 
 JP1, JP2, JP3, JP4 implement power-over-MIDI, using pin assignment
@@ -21725,17 +21726,17 @@ proposed by Craig Anderton
 (Pin 1 = Vcc, pin 3 = ground).
 Close JP1 &amp; 2 to power the MIDI input.
 Close JP3 &amp; 4 to power the output.</text>
-<text x="185.42" y="63.5" size="1.778" layer="94" align="top-left">Set S2 to "PROG" to load Sketch on 
+<text x="185.42" y="63.5" size="1.778" layer="97" align="top-left">Set S2 to "PROG" to load Sketch on 
 arduino, then set to "RUN" for MIDI 
 communication
 
 LED1, LED2, RV1, RV2, S3, S4, and S5 are 
 available for application usage.</text>
-<wire x1="86.36" y1="30.48" x2="121.92" y2="30.48" width="0.3048" layer="94" style="shortdash"/>
-<wire x1="86.36" y1="104.14" x2="86.36" y2="30.48" width="0.3048" layer="94" style="shortdash"/>
-<text x="88.9" y="96.52" size="2.54" layer="94">Serial Port
+<wire x1="86.36" y1="30.48" x2="121.92" y2="30.48" width="0.3048" layer="97" style="shortdash"/>
+<wire x1="86.36" y1="104.14" x2="86.36" y2="30.48" width="0.3048" layer="97" style="shortdash"/>
+<text x="88.9" y="96.52" size="2.54" layer="97">Serial Port
 Selection</text>
-<text x="88.9" y="50.8" size="1.778" layer="94" align="top-left">SJ1, SJ2 select 
+<text x="88.9" y="50.8" size="1.778" layer="97" align="top-left">SJ1, SJ2 select 
 between hardware 
 serial port (pins 0, 1) 
 and  soft-serial 
@@ -21743,6 +21744,8 @@ and  soft-serial
 Hardware serial 
 selected by default.
 </text>
+<text x="165.1" y="170.18" size="1.778" layer="97" align="top-left">Shield Vcc is provided by Arduino 5V line.  
+The MIDI standard specifies 5V operation.</text>
 </plain>
 <instances>
 <instance part="D1" gate="G$1" x="63.5" y="157.48" rot="R90"/>
@@ -21788,7 +21791,6 @@ selected by default.
 <instance part="GND8" gate="1" x="7.62" y="63.5"/>
 <instance part="S1" gate="G$1" x="139.7" y="116.84"/>
 <instance part="S2" gate="1" x="220.98" y="142.24"/>
-<instance part="U$1" gate="G$1" x="76.2" y="160.02"/>
 <instance part="JP3" gate="G$1" x="48.26" y="55.88" smashed="yes" rot="R90">
 <attribute name="NAME" x="45.72" y="53.34" size="1.778" layer="95" rot="R90"/>
 </instance>
@@ -21811,6 +21813,7 @@ selected by default.
 <instance part="LOGO5" gate="G$1" x="129.54" y="17.78"/>
 <instance part="SJ1" gate="G$1" x="101.6" y="83.82" rot="R180"/>
 <instance part="SJ2" gate="G$1" x="101.6" y="60.96" rot="R180"/>
+<instance part="U1" gate="G$1" x="76.2" y="160.02"/>
 </instances>
 <busses>
 </busses>
@@ -21819,8 +21822,8 @@ selected by default.
 <segment>
 <wire x1="93.98" y1="152.4" x2="93.98" y2="147.32" width="0.1524" layer="91"/>
 <pinref part="GND1" gate="1" pin="GND"/>
-<pinref part="U$1" gate="G$1" pin="GND"/>
 <wire x1="88.9" y1="152.4" x2="93.98" y2="152.4" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="GND"/>
 </segment>
 <segment>
 <wire x1="154.94" y1="99.06" x2="154.94" y2="96.52" width="0.1524" layer="91"/>
@@ -21933,8 +21936,8 @@ selected by default.
 <junction x="91.44" y="172.72"/>
 <pinref part="P+1" gate="1" pin="VCC"/>
 <pinref part="R2" gate="G$1" pin="2"/>
-<pinref part="U$1" gate="G$1" pin="VCC"/>
 <wire x1="88.9" y1="162.56" x2="91.44" y2="162.56" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="VCC"/>
 </segment>
 <segment>
 <pinref part="U2" gate="G$1" pin="VCC"/>
@@ -21959,9 +21962,9 @@ selected by default.
 <wire x1="63.5" y1="162.56" x2="60.96" y2="162.56" width="0.1524" layer="91"/>
 <pinref part="D1" gate="G$1" pin="C"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<pinref part="U$1" gate="G$1" pin="A"/>
 <wire x1="66.04" y1="162.56" x2="63.5" y2="162.56" width="0.1524" layer="91"/>
 <junction x="63.5" y="162.56"/>
+<pinref part="U1" gate="G$1" pin="A"/>
 </segment>
 </net>
 <net name="PIN5" class="0">
@@ -21972,9 +21975,9 @@ selected by default.
 <wire x1="30.48" y1="134.62" x2="27.94" y2="134.62" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="134.62" x2="27.94" y2="152.4" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="152.4" x2="63.5" y2="152.4" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="C"/>
 <wire x1="66.04" y1="152.4" x2="63.5" y2="152.4" width="0.1524" layer="91"/>
 <junction x="63.5" y="152.4"/>
+<pinref part="U1" gate="G$1" pin="C"/>
 </segment>
 </net>
 <net name="PORT-TX" class="0">
@@ -21999,9 +22002,9 @@ selected by default.
 <wire x1="96.52" y1="157.48" x2="96.52" y2="160.02" width="0.1524" layer="91"/>
 <label x="106.68" y="157.48" size="1.27" layer="95" xref="yes"/>
 <pinref part="R2" gate="G$1" pin="1"/>
-<pinref part="U$1" gate="G$1" pin="VOUT"/>
 <wire x1="88.9" y1="157.48" x2="96.52" y2="157.48" width="0.1524" layer="91"/>
 <junction x="96.52" y="157.48"/>
+<pinref part="U1" gate="G$1" pin="VOUT"/>
 </segment>
 <segment>
 <pinref part="SJ1" gate="G$1" pin="2"/>
