@@ -21603,10 +21603,10 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="GND8" library="SparkFun" deviceset="GND" device=""/>
 <part name="S1" library="SparkFun-Electromechanical" deviceset="SWITCH-MOMENTARY-2" device="SMD" value="Reset"/>
 <part name="S2" library="SparkFun-Electromechanical" deviceset="SWITCH-SPDT" device="SMD" value="RUN/PROGRAM"/>
-<part name="JP3" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
-<part name="JP4" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
-<part name="JP1" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
-<part name="JP2" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
+<part name="SJ6" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
+<part name="SJ7" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
+<part name="SJ4" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
+<part name="SJ5" library="SparkFun-Passives" deviceset="JUMPER-PAD-2-NO" device="YES_SILK"/>
 <part name="P+6" library="SparkFun" deviceset="VCC" device=""/>
 <part name="P+7" library="SparkFun" deviceset="VCC" device=""/>
 <part name="GND9" library="SparkFun" deviceset="GND" device=""/>
@@ -21618,6 +21618,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="SJ1" library="SparkFun-Passives" deviceset="JUMPER-PAD-3-2OF3_NC_BY_TRACE" device="_SMALL" value="TX sel"/>
 <part name="SJ2" library="SparkFun-Passives" deviceset="JUMPER-PAD-3-2OF3_NC_BY_TRACE" device="_SMALL" value="RX sel"/>
 <part name="U1" library="SparkFun-DiscreteSemi" deviceset="OPTO_DARL_6N138S" device="" value="6N138M"/>
+<part name="SJ3" library="SparkFun-Passives" deviceset="JUMPER-PAD-3-2OF3_NC_BY_TRACE" device="_SMALL" value="out/thru"/>
 </parts>
 <sheets>
 <sheet>
@@ -21625,11 +21626,10 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <text x="2.54" y="180.594" size="2.54" layer="97">MIDI IN</text>
 <text x="2.54" y="99.06" size="2.54" layer="97">MIDI OUT</text>
 <text x="172.72" y="7.62" size="2.54" layer="94">Byron Jacquot</text>
-<text x="238.76" y="7.62" size="2.54" layer="94">V1.5</text>
+<text x="238.76" y="7.62" size="2.54" layer="94">V1.6</text>
 <wire x1="129.54" y1="185.42" x2="121.92" y2="185.42" width="0.3048" layer="94" style="shortdash"/>
 <wire x1="121.92" y1="185.42" x2="121.92" y2="104.14" width="0.3048" layer="97" style="shortdash"/>
-<wire x1="121.92" y1="104.14" x2="121.92" y2="30.48" width="0.3048" layer="97" style="shortdash"/>
-<wire x1="121.92" y1="30.48" x2="121.92" y2="0" width="0.3048" layer="97" style="shortdash"/>
+<wire x1="121.92" y1="104.14" x2="121.92" y2="0" width="0.3048" layer="97" style="shortdash"/>
 <wire x1="0" y1="104.14" x2="86.36" y2="104.14" width="0.3048" layer="97" style="shortdash"/>
 <text x="127" y="180.34" size="2.54" layer="97">Shield Connections and controls</text>
 <wire x1="86.36" y1="104.14" x2="121.92" y2="104.14" width="0.3048" layer="97" style="shortdash"/>
@@ -21637,22 +21637,21 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <text x="2.54" y="25.4" size="1.778" layer="97" align="top-left">MIDI I/O reference design from:
 http://www.midi.org/techspecs/electrispec.php
 
-JP1, JP2, JP3, JP4 implement power-over-MIDI, using pin assignment
+SJ4, SJ5, SJ6, SJ7 implement power-over-MIDI, 
+using pin assignment
 proposed by Craig Anderton 
 (Pin 1 = Vcc, pin 3 = ground).
-Close JP1 &amp; 2 to power the MIDI input.
-Close JP3 &amp; 4 to power the output.</text>
+Close JP4 &amp; 5 to power the MIDI input.
+Close JP6 &amp; 7 to power the output.</text>
 <text x="185.42" y="63.5" size="1.778" layer="97" align="top-left">Set S2 to "PROG" to load Sketch on 
 arduino, then set to "RUN" for MIDI 
 communication
 
 LED1, LED2, RV1, RV2, S3, S4, and S5 are 
 available for application usage.</text>
-<wire x1="86.36" y1="30.48" x2="121.92" y2="30.48" width="0.3048" layer="97" style="shortdash"/>
-<wire x1="86.36" y1="104.14" x2="86.36" y2="30.48" width="0.3048" layer="97" style="shortdash"/>
 <text x="88.9" y="96.52" size="2.54" layer="97">Serial Port
 Selection</text>
-<text x="88.9" y="50.8" size="1.778" layer="97" align="top-left">SJ1, SJ2 select 
+<text x="88.9" y="45.72" size="1.778" layer="97" align="top-left">SJ1, SJ2 select 
 between hardware 
 serial port (pins 0, 1) 
 and  soft-serial 
@@ -21662,13 +21661,21 @@ selected by default.
 </text>
 <text x="165.1" y="170.18" size="1.778" layer="97" align="top-left">Shield Vcc is provided by Arduino 5V line.  
 The MIDI standard specifies 5V operation.</text>
+<wire x1="86.36" y1="104.14" x2="86.36" y2="30.48" width="0.3048" layer="97" style="shortdash"/>
+<wire x1="86.36" y1="30.48" x2="86.36" y2="0" width="0.3048" layer="97" style="shortdash"/>
+<text x="66.04" y="121.92" size="1.778" layer="97" align="top-left">SJ3 configures the transmitting
+port as a MIDI out (default) or 
+MIDI thru.
+'Out' transmits data from 328.
+'Thru' copies data stream from input.
+</text>
 </plain>
 <instances>
-<instance part="D1" gate="G$1" x="63.5" y="157.48" rot="R90"/>
-<instance part="R1" gate="G$1" x="55.88" y="162.56"/>
-<instance part="GND1" gate="1" x="93.98" y="144.78"/>
-<instance part="R2" gate="G$1" x="96.52" y="165.1" rot="R90"/>
-<instance part="P+1" gate="1" x="91.44" y="175.26"/>
+<instance part="D1" gate="G$1" x="50.8" y="157.48" rot="R90"/>
+<instance part="R1" gate="G$1" x="43.18" y="162.56"/>
+<instance part="GND1" gate="1" x="78.74" y="144.78"/>
+<instance part="R2" gate="G$1" x="83.82" y="165.1" rot="R90"/>
+<instance part="P+1" gate="1" x="78.74" y="175.26"/>
 <instance part="R3" gate="G$1" x="71.12" y="86.36" rot="R90"/>
 <instance part="R4" gate="G$1" x="43.18" y="68.58"/>
 <instance part="P+2" gate="1" x="71.12" y="93.98"/>
@@ -21694,34 +21701,34 @@ The MIDI standard specifies 5V operation.</text>
 <instance part="S5" gate="G$1" x="228.6" y="119.38" smashed="yes">
 <attribute name="NAME" x="226.06" y="121.92" size="1.778" layer="95"/>
 </instance>
-<instance part="J1" gate="G$1" x="38.1" y="129.54"/>
+<instance part="J1" gate="G$1" x="25.4" y="129.54"/>
 <instance part="J2" gate="G$1" x="60.96" y="63.5"/>
 <instance part="GND7" gate="1" x="66.04" y="76.2"/>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
 <instance part="FRAME1" gate="V" x="147.32" y="0"/>
-<instance part="RV1" gate="G$1" x="134.62" y="154.94"/>
-<instance part="RV2" gate="G$1" x="147.32" y="154.94"/>
+<instance part="RV1" gate="G$1" x="134.62" y="154.94" rot="MR180"/>
+<instance part="RV2" gate="G$1" x="147.32" y="154.94" rot="MR180"/>
 <instance part="J3" gate="G$1" x="172.72" y="116.84"/>
 <instance part="U2" gate="G$1" x="22.86" y="71.12"/>
 <instance part="P+5" gate="1" x="38.1" y="93.98"/>
 <instance part="GND8" gate="1" x="7.62" y="63.5"/>
 <instance part="S1" gate="G$1" x="139.7" y="116.84"/>
 <instance part="S2" gate="1" x="220.98" y="142.24"/>
-<instance part="JP3" gate="G$1" x="48.26" y="55.88" smashed="yes" rot="R90">
+<instance part="SJ6" gate="G$1" x="48.26" y="55.88" smashed="yes" rot="R90">
 <attribute name="NAME" x="45.72" y="53.34" size="1.778" layer="95" rot="R90"/>
 </instance>
-<instance part="JP4" gate="G$1" x="78.74" y="68.58" smashed="yes" rot="R270">
+<instance part="SJ7" gate="G$1" x="78.74" y="68.58" smashed="yes" rot="R270">
 <attribute name="NAME" x="81.28" y="71.12" size="1.778" layer="95" rot="R270"/>
 </instance>
-<instance part="JP1" gate="G$1" x="20.32" y="124.46" smashed="yes" rot="R90">
-<attribute name="NAME" x="17.78" y="121.92" size="1.778" layer="95" rot="R90"/>
+<instance part="SJ4" gate="G$1" x="7.62" y="124.46" smashed="yes" rot="R90">
+<attribute name="NAME" x="5.08" y="121.92" size="1.778" layer="95" rot="R90"/>
 </instance>
-<instance part="JP2" gate="G$1" x="60.96" y="134.62" smashed="yes" rot="R270">
-<attribute name="NAME" x="63.5" y="137.16" size="1.778" layer="95" rot="R270"/>
+<instance part="SJ5" gate="G$1" x="48.26" y="134.62" smashed="yes" rot="R270">
+<attribute name="NAME" x="50.8" y="137.16" size="1.778" layer="95" rot="R270"/>
 </instance>
 <instance part="P+6" gate="1" x="78.74" y="76.2"/>
-<instance part="P+7" gate="1" x="60.96" y="142.24"/>
-<instance part="GND9" gate="1" x="20.32" y="114.3"/>
+<instance part="P+7" gate="1" x="48.26" y="142.24"/>
+<instance part="GND9" gate="1" x="7.62" y="114.3"/>
 <instance part="GND10" gate="1" x="48.26" y="40.64"/>
 <instance part="LOGO1" gate="G$1" x="127" y="33.02"/>
 <instance part="LOGO2" gate="G$1" x="134.62" y="10.16"/>
@@ -21729,16 +21736,17 @@ The MIDI standard specifies 5V operation.</text>
 <instance part="LOGO5" gate="G$1" x="129.54" y="17.78"/>
 <instance part="SJ1" gate="G$1" x="101.6" y="83.82" rot="R180"/>
 <instance part="SJ2" gate="G$1" x="101.6" y="60.96" rot="R180"/>
-<instance part="U1" gate="G$1" x="76.2" y="160.02"/>
+<instance part="U1" gate="G$1" x="63.5" y="160.02"/>
+<instance part="SJ3" gate="G$1" x="86.36" y="134.62" rot="MR0"/>
 </instances>
 <busses>
 </busses>
 <nets>
 <net name="GND" class="0">
 <segment>
-<wire x1="93.98" y1="152.4" x2="93.98" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="78.74" y1="152.4" x2="78.74" y2="147.32" width="0.1524" layer="91"/>
 <pinref part="GND1" gate="1" pin="GND"/>
-<wire x1="88.9" y1="152.4" x2="93.98" y2="152.4" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="152.4" x2="78.74" y2="152.4" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="GND"/>
 </segment>
 <segment>
@@ -21777,16 +21785,6 @@ The MIDI standard specifies 5V operation.</text>
 <wire x1="60.96" y1="81.28" x2="60.96" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="RV1" gate="G$1" pin="A"/>
-<pinref part="GND6" gate="1" pin="GND"/>
-<wire x1="134.62" y1="147.32" x2="134.62" y2="144.78" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="RV2" gate="G$1" pin="A"/>
-<pinref part="GND5" gate="1" pin="GND"/>
-<wire x1="147.32" y1="147.32" x2="147.32" y2="144.78" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="U2" gate="G$1" pin="GND"/>
 <pinref part="GND8" gate="1" pin="GND"/>
 <wire x1="7.62" y1="66.04" x2="7.62" y2="68.58" width="0.1524" layer="91"/>
@@ -21805,12 +21803,22 @@ The MIDI standard specifies 5V operation.</text>
 <segment>
 <pinref part="GND10" gate="1" pin="GND"/>
 <wire x1="48.26" y1="43.18" x2="48.26" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="JP3" gate="G$1" pin="1"/>
+<pinref part="SJ6" gate="G$1" pin="1"/>
 </segment>
 <segment>
-<pinref part="JP1" gate="G$1" pin="1"/>
+<pinref part="SJ4" gate="G$1" pin="1"/>
 <pinref part="GND9" gate="1" pin="GND"/>
-<wire x1="20.32" y1="119.38" x2="20.32" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="119.38" x2="7.62" y2="116.84" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="RV2" gate="G$1" pin="E"/>
+<pinref part="GND5" gate="1" pin="GND"/>
+<wire x1="147.32" y1="147.32" x2="147.32" y2="144.78" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="RV1" gate="G$1" pin="E"/>
+<pinref part="GND6" gate="1" pin="GND"/>
+<wire x1="134.62" y1="147.32" x2="134.62" y2="144.78" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VCC" class="0">
@@ -21828,10 +21836,10 @@ The MIDI standard specifies 5V operation.</text>
 <wire x1="134.62" y1="167.64" x2="134.62" y2="170.18" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="167.64" x2="134.62" y2="167.64" width="0.1524" layer="91"/>
 <pinref part="P+3" gate="1" pin="VCC"/>
-<pinref part="RV2" gate="G$1" pin="E"/>
-<wire x1="147.32" y1="162.56" x2="147.32" y2="167.64" width="0.1524" layer="91"/>
-<pinref part="RV1" gate="G$1" pin="E"/>
-<wire x1="134.62" y1="162.56" x2="134.62" y2="167.64" width="0.1524" layer="91"/>
+<pinref part="RV1" gate="G$1" pin="A"/>
+<wire x1="134.62" y1="167.64" x2="134.62" y2="162.56" width="0.1524" layer="91"/>
+<pinref part="RV2" gate="G$1" pin="A"/>
+<wire x1="147.32" y1="167.64" x2="147.32" y2="162.56" width="0.1524" layer="91"/>
 <junction x="134.62" y="167.64"/>
 </segment>
 <segment>
@@ -21845,14 +21853,14 @@ The MIDI standard specifies 5V operation.</text>
 <pinref part="P+4" gate="1" pin="VCC"/>
 </segment>
 <segment>
-<wire x1="91.44" y1="162.56" x2="91.44" y2="172.72" width="0.1524" layer="91"/>
-<wire x1="91.44" y1="172.72" x2="91.44" y2="175.26" width="0.1524" layer="91"/>
-<wire x1="96.52" y1="170.18" x2="96.52" y2="172.72" width="0.1524" layer="91"/>
-<wire x1="96.52" y1="172.72" x2="91.44" y2="172.72" width="0.1524" layer="91"/>
-<junction x="91.44" y="172.72"/>
+<wire x1="78.74" y1="162.56" x2="78.74" y2="172.72" width="0.1524" layer="91"/>
+<wire x1="78.74" y1="172.72" x2="78.74" y2="175.26" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="170.18" x2="83.82" y2="172.72" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="172.72" x2="78.74" y2="172.72" width="0.1524" layer="91"/>
+<junction x="78.74" y="172.72"/>
 <pinref part="P+1" gate="1" pin="VCC"/>
 <pinref part="R2" gate="G$1" pin="2"/>
-<wire x1="88.9" y1="162.56" x2="91.44" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="162.56" x2="78.74" y2="162.56" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="VCC"/>
 </segment>
 <segment>
@@ -21862,65 +21870,66 @@ The MIDI standard specifies 5V operation.</text>
 <wire x1="38.1" y1="73.66" x2="38.1" y2="93.98" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="JP4" gate="G$1" pin="1"/>
+<pinref part="SJ7" gate="G$1" pin="1"/>
 <wire x1="78.74" y1="73.66" x2="78.74" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="P+6" gate="1" pin="VCC"/>
 </segment>
 <segment>
-<pinref part="JP2" gate="G$1" pin="1"/>
+<pinref part="SJ5" gate="G$1" pin="1"/>
 <pinref part="P+7" gate="1" pin="VCC"/>
-<wire x1="60.96" y1="139.7" x2="60.96" y2="142.24" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="139.7" x2="48.26" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="56" class="0">
 <segment>
-<wire x1="63.5" y1="160.02" x2="63.5" y2="162.56" width="0.1524" layer="91"/>
-<wire x1="63.5" y1="162.56" x2="60.96" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="160.02" x2="50.8" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="162.56" x2="48.26" y2="162.56" width="0.1524" layer="91"/>
 <pinref part="D1" gate="G$1" pin="C"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="66.04" y1="162.56" x2="63.5" y2="162.56" width="0.1524" layer="91"/>
-<junction x="63.5" y="162.56"/>
+<wire x1="53.34" y1="162.56" x2="50.8" y2="162.56" width="0.1524" layer="91"/>
+<junction x="50.8" y="162.56"/>
 <pinref part="U1" gate="G$1" pin="A"/>
 </segment>
 </net>
 <net name="PIN5" class="0">
 <segment>
-<wire x1="63.5" y1="154.94" x2="63.5" y2="152.4" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="154.94" x2="50.8" y2="152.4" width="0.1524" layer="91"/>
 <pinref part="D1" gate="G$1" pin="A"/>
 <pinref part="J1" gate="G$1" pin="5"/>
-<wire x1="30.48" y1="134.62" x2="27.94" y2="134.62" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="134.62" x2="27.94" y2="152.4" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="152.4" x2="63.5" y2="152.4" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="152.4" x2="63.5" y2="152.4" width="0.1524" layer="91"/>
-<junction x="63.5" y="152.4"/>
+<wire x1="17.78" y1="134.62" x2="15.24" y2="134.62" width="0.1524" layer="91"/>
+<wire x1="15.24" y1="134.62" x2="15.24" y2="152.4" width="0.1524" layer="91"/>
+<wire x1="15.24" y1="152.4" x2="50.8" y2="152.4" width="0.1524" layer="91"/>
+<wire x1="53.34" y1="152.4" x2="50.8" y2="152.4" width="0.1524" layer="91"/>
+<junction x="50.8" y="152.4"/>
 <pinref part="U1" gate="G$1" pin="C"/>
 </segment>
 </net>
 <net name="PORT-TX" class="0">
 <segment>
-<pinref part="U2" gate="G$1" pin="A"/>
-<wire x1="10.16" y1="71.12" x2="5.08" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="5.08" y1="71.12" x2="5.08" y2="83.82" width="0.1524" layer="91"/>
-<wire x1="5.08" y1="83.82" x2="22.86" y2="83.82" width="0.1524" layer="91"/>
-<wire x1="22.86" y1="83.82" x2="22.86" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="22.86" y1="88.9" x2="20.32" y2="88.9" width="0.1524" layer="91"/>
-<label x="20.32" y="88.9" size="1.27" layer="95" rot="R180" xref="yes"/>
-</segment>
-<segment>
 <pinref part="SJ2" gate="G$1" pin="2"/>
 <wire x1="106.68" y1="60.96" x2="109.22" y2="60.96" width="0.1524" layer="91"/>
 <label x="109.22" y="60.96" size="1.27" layer="95" xref="yes"/>
 </segment>
+<segment>
+<wire x1="86.36" y1="129.54" x2="86.36" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="124.46" x2="81.28" y2="124.46" width="0.1524" layer="91"/>
+<label x="81.28" y="124.46" size="1.27" layer="95" rot="R180" xref="yes"/>
+<pinref part="SJ3" gate="G$1" pin="3"/>
+</segment>
 </net>
 <net name="PORT-RX" class="0">
 <segment>
-<wire x1="96.52" y1="157.48" x2="106.68" y2="157.48" width="0.1524" layer="91"/>
-<wire x1="96.52" y1="157.48" x2="96.52" y2="160.02" width="0.1524" layer="91"/>
-<label x="106.68" y="157.48" size="1.27" layer="95" xref="yes"/>
+<wire x1="83.82" y1="157.48" x2="86.36" y2="157.48" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="157.48" x2="88.9" y2="157.48" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="157.48" x2="83.82" y2="160.02" width="0.1524" layer="91"/>
+<label x="88.9" y="157.48" size="1.27" layer="95" xref="yes"/>
 <pinref part="R2" gate="G$1" pin="1"/>
-<wire x1="88.9" y1="157.48" x2="96.52" y2="157.48" width="0.1524" layer="91"/>
-<junction x="96.52" y="157.48"/>
+<wire x1="76.2" y1="157.48" x2="83.82" y2="157.48" width="0.1524" layer="91"/>
+<junction x="83.82" y="157.48"/>
 <pinref part="U1" gate="G$1" pin="VOUT"/>
+<wire x1="86.36" y1="157.48" x2="86.36" y2="139.7" width="0.1524" layer="91"/>
+<pinref part="SJ3" gate="G$1" pin="1"/>
+<junction x="86.36" y="157.48"/>
 </segment>
 <segment>
 <pinref part="SJ1" gate="G$1" pin="2"/>
@@ -21980,10 +21989,10 @@ The MIDI standard specifies 5V operation.</text>
 <segment>
 <wire x1="142.24" y1="132.08" x2="160.02" y2="132.08" width="0.1524" layer="91"/>
 <label x="147.828" y="134.112" size="1.778" layer="95" rot="R180"/>
-<pinref part="RV1" gate="G$1" pin="S"/>
-<wire x1="139.7" y1="154.94" x2="142.24" y2="154.94" width="0.1524" layer="91"/>
 <wire x1="142.24" y1="154.94" x2="142.24" y2="132.08" width="0.1524" layer="91"/>
 <pinref part="J3" gate="G$1" pin="A1"/>
+<pinref part="RV1" gate="G$1" pin="S"/>
+<wire x1="142.24" y1="154.94" x2="139.7" y2="154.94" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A0" class="0">
@@ -21991,9 +22000,9 @@ The MIDI standard specifies 5V operation.</text>
 <wire x1="160.02" y1="134.62" x2="154.94" y2="134.62" width="0.1524" layer="91"/>
 <wire x1="154.94" y1="134.62" x2="154.94" y2="154.94" width="0.1524" layer="91"/>
 <label x="159.004" y="136.652" size="1.778" layer="95" rot="R180"/>
-<pinref part="RV2" gate="G$1" pin="S"/>
-<wire x1="152.4" y1="154.94" x2="154.94" y2="154.94" width="0.1524" layer="91"/>
 <pinref part="J3" gate="G$1" pin="A0"/>
+<pinref part="RV2" gate="G$1" pin="S"/>
+<wire x1="154.94" y1="154.94" x2="152.4" y2="154.94" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$9" class="0">
@@ -22043,10 +22052,10 @@ The MIDI standard specifies 5V operation.</text>
 <net name="N$2" class="0">
 <segment>
 <pinref part="J1" gate="G$1" pin="4"/>
-<wire x1="45.72" y1="134.62" x2="48.26" y2="134.62" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="134.62" x2="35.56" y2="134.62" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="1"/>
-<wire x1="48.26" y1="134.62" x2="48.26" y2="162.56" width="0.1524" layer="91"/>
-<wire x1="48.26" y1="162.56" x2="50.8" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="134.62" x2="35.56" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="162.56" x2="38.1" y2="162.56" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -22068,28 +22077,28 @@ The MIDI standard specifies 5V operation.</text>
 <wire x1="48.26" y1="60.96" x2="48.26" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="3"/>
 <wire x1="48.26" y1="63.5" x2="50.8" y2="63.5" width="0.1524" layer="91"/>
-<pinref part="JP3" gate="G$1" pin="2"/>
+<pinref part="SJ6" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$5" class="0">
 <segment>
 <pinref part="J2" gate="G$1" pin="1"/>
 <wire x1="71.12" y1="63.5" x2="78.74" y2="63.5" width="0.1524" layer="91"/>
-<pinref part="JP4" gate="G$1" pin="2"/>
+<pinref part="SJ7" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$6" class="0">
 <segment>
 <pinref part="J1" gate="G$1" pin="3"/>
-<wire x1="20.32" y1="129.54" x2="27.94" y2="129.54" width="0.1524" layer="91"/>
-<pinref part="JP1" gate="G$1" pin="2"/>
+<wire x1="7.62" y1="129.54" x2="15.24" y2="129.54" width="0.1524" layer="91"/>
+<pinref part="SJ4" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$7" class="0">
 <segment>
 <pinref part="J1" gate="G$1" pin="1"/>
-<wire x1="48.26" y1="129.54" x2="60.96" y2="129.54" width="0.1524" layer="91"/>
-<pinref part="JP2" gate="G$1" pin="2"/>
+<wire x1="35.56" y1="129.54" x2="48.26" y2="129.54" width="0.1524" layer="91"/>
+<pinref part="SJ5" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="HARD-TX" class="0">
@@ -22142,6 +22151,22 @@ The MIDI standard specifies 5V operation.</text>
 <label x="190.5" y="111.76" size="1.27" layer="95" xref="yes"/>
 <pinref part="J3" gate="G$1" pin="D8"/>
 <wire x1="190.5" y1="111.76" x2="185.42" y2="111.76" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="TX-BUF" class="0">
+<segment>
+<pinref part="U2" gate="G$1" pin="A"/>
+<wire x1="10.16" y1="71.12" x2="5.08" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="71.12" x2="5.08" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="83.82" x2="22.86" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="83.82" x2="22.86" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="88.9" x2="20.32" y2="88.9" width="0.1524" layer="91"/>
+<label x="20.32" y="88.9" size="1.27" layer="95" rot="R180" xref="yes"/>
+</segment>
+<segment>
+<wire x1="93.98" y1="134.62" x2="91.44" y2="134.62" width="0.1524" layer="91"/>
+<pinref part="SJ3" gate="G$1" pin="2"/>
+<label x="93.98" y="134.62" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 </nets>
