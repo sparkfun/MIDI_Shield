@@ -21832,7 +21832,7 @@ proposed by Craig Anderton
 Close JP4 &amp; 5 to power the MIDI input.
 Close JP6 &amp; 7 to power the output.</text>
 <text x="185.42" y="63.5" size="1.778" layer="97" align="top-left">Set S2 to "PROG" to load Sketch on 
-arduino, then set to "RUN" for MIDI 
+Arduino, then set to "RUN" for MIDI 
 communication
 
 LED1, LED2, RV1, RV2, S3, S4, and S5 are 
