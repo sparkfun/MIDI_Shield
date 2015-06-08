@@ -20632,6 +20632,8 @@ Basic SMA packaged diode. Good for reverse polarization protection. Common part 
 <smd name="3" x="1.12" y="-4.96" dx="1.3" dy="1.4" layer="1"/>
 <smd name="4" x="3.66" y="-4.96" dx="1.3" dy="1.4" layer="1"/>
 <circle x="-6.3" y="-3.84" radius="0.381" width="0" layer="21"/>
+<text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.54" y="-1.27" size="1.27" layer="27">&gt;VALUE</text>
 </package>
 </packages>
 <symbols>
@@ -21814,7 +21816,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <text x="2.54" y="180.594" size="2.54" layer="97">MIDI IN</text>
 <text x="2.54" y="99.06" size="2.54" layer="97">MIDI OUT</text>
 <text x="175.006" y="6.604" size="2.54" layer="94">Byron Jacquot</text>
-<text x="238.76" y="7.62" size="2.54" layer="94">V1.6</text>
+<text x="238.76" y="7.62" size="2.54" layer="94">V1.5</text>
 <wire x1="129.54" y1="185.42" x2="121.92" y2="185.42" width="0.3048" layer="94" style="shortdash"/>
 <wire x1="121.92" y1="185.42" x2="121.92" y2="104.14" width="0.3048" layer="97" style="shortdash"/>
 <wire x1="121.92" y1="104.14" x2="121.92" y2="0" width="0.3048" layer="97" style="shortdash"/>
@@ -21906,18 +21908,18 @@ MIDI thru.
 <instance part="SJ6" gate="G$1" x="48.26" y="55.88" smashed="yes" rot="R90">
 <attribute name="NAME" x="45.72" y="53.34" size="1.778" layer="95" rot="R90"/>
 </instance>
-<instance part="SJ7" gate="G$1" x="78.74" y="68.58" smashed="yes" rot="R270">
-<attribute name="NAME" x="81.28" y="71.12" size="1.778" layer="95" rot="R270"/>
+<instance part="SJ7" gate="G$1" x="78.74" y="71.12" smashed="yes" rot="R270">
+<attribute name="NAME" x="81.28" y="73.66" size="1.778" layer="95" rot="R270"/>
 </instance>
-<instance part="SJ4" gate="G$1" x="7.62" y="124.46" smashed="yes" rot="R90">
-<attribute name="NAME" x="5.08" y="121.92" size="1.778" layer="95" rot="R90"/>
+<instance part="SJ4" gate="G$1" x="7.62" y="121.92" smashed="yes" rot="R90">
+<attribute name="NAME" x="5.08" y="119.38" size="1.778" layer="95" rot="R90"/>
 </instance>
-<instance part="SJ5" gate="G$1" x="48.26" y="134.62" smashed="yes" rot="R270">
-<attribute name="NAME" x="50.8" y="137.16" size="1.778" layer="95" rot="R270"/>
+<instance part="SJ5" gate="G$1" x="48.26" y="137.16" smashed="yes" rot="R270">
+<attribute name="NAME" x="50.8" y="139.7" size="1.778" layer="95" rot="R270"/>
 </instance>
-<instance part="P+6" gate="1" x="78.74" y="76.2"/>
-<instance part="P+7" gate="1" x="48.26" y="142.24"/>
-<instance part="GND9" gate="1" x="7.62" y="114.3"/>
+<instance part="P+6" gate="1" x="78.74" y="78.74"/>
+<instance part="P+7" gate="1" x="48.26" y="144.78"/>
+<instance part="GND9" gate="1" x="7.62" y="111.76"/>
 <instance part="GND10" gate="1" x="48.26" y="40.64"/>
 <instance part="LOGO1" gate="G$1" x="127" y="33.02"/>
 <instance part="LOGO2" gate="G$1" x="134.62" y="10.16"/>
@@ -21998,7 +22000,7 @@ MIDI thru.
 <segment>
 <pinref part="SJ4" gate="G$1" pin="1"/>
 <pinref part="GND9" gate="1" pin="GND"/>
-<wire x1="7.62" y1="119.38" x2="7.62" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="116.84" x2="7.62" y2="114.3" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="RV2" gate="G$1" pin="E"/>
@@ -22061,13 +22063,13 @@ MIDI thru.
 </segment>
 <segment>
 <pinref part="SJ7" gate="G$1" pin="1"/>
-<wire x1="78.74" y1="73.66" x2="78.74" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="78.74" y1="76.2" x2="78.74" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="P+6" gate="1" pin="VCC"/>
 </segment>
 <segment>
 <pinref part="SJ5" gate="G$1" pin="1"/>
 <pinref part="P+7" gate="1" pin="VCC"/>
-<wire x1="48.26" y1="139.7" x2="48.26" y2="142.24" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="142.24" x2="48.26" y2="144.78" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="56" class="0">
@@ -22274,12 +22276,14 @@ MIDI thru.
 <segment>
 <pinref part="J2" gate="G$1" pin="1"/>
 <wire x1="71.12" y1="63.5" x2="78.74" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="78.74" y1="63.5" x2="78.74" y2="66.04" width="0.1524" layer="91"/>
 <pinref part="SJ7" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$6" class="0">
 <segment>
 <pinref part="J1" gate="G$1" pin="3"/>
+<wire x1="7.62" y1="127" x2="7.62" y2="129.54" width="0.1524" layer="91"/>
 <wire x1="7.62" y1="129.54" x2="15.24" y2="129.54" width="0.1524" layer="91"/>
 <pinref part="SJ4" gate="G$1" pin="2"/>
 </segment>
@@ -22288,6 +22292,7 @@ MIDI thru.
 <segment>
 <pinref part="J1" gate="G$1" pin="1"/>
 <wire x1="35.56" y1="129.54" x2="48.26" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="129.54" x2="48.26" y2="132.08" width="0.1524" layer="91"/>
 <pinref part="SJ5" gate="G$1" pin="2"/>
 </segment>
 </net>
