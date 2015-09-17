@@ -29,12 +29,10 @@ void setup()
   Serial.println("Setting up");
 
   // do I need to init the soft serial port?
-  // No - MIDI will do it.
+  // No - MIDI Lib will do it.
 
-#if 1
   MIDI.begin(MIDI_CHANNEL_OMNI);
   MIDI.turnThruOff();
-#endif
 
   pinMode(PIN_RAW_INPUT, INPUT_PULLUP);
 
@@ -46,10 +44,14 @@ void loop()
 
   // put your main code here, to run repeatedly:
 
-  // turn the crank...
-  
   if(digitalRead(PIN_RAW_INPUT) == LOW)
   {
+    // If you hold button D2 on the shield, we'll print
+    // the raw hex values from the MIDI input.
+    //
+    // This can be useful if you need to troubleshoot issues with
+    // running status
+
     byte input;
     if(SoftSerial.available() != 0)
     {
@@ -65,6 +67,7 @@ void loop()
   }
   else
   {
+    // turn the crank...
     if (  MIDI.read())
     {
       switch (MIDI.getType())
