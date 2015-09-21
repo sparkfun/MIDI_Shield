@@ -19,10 +19,13 @@ SoftwareSerial SoftSerial(8, 9);
    - name for this midi instance
 */
 MIDI_CREATE_INSTANCE(SoftwareSerial, SoftSerial, MIDI);
+// This doesn't make much sense to use with hardware serial, as it needs 
+// hard serial to report what it's seeing...
 
 void setup()
 {
-  // put your setup code here, to run once:
+  // put your setup code here, to run
+  once:
 
   // LED outputs
   Serial.begin(19200);
@@ -41,6 +44,8 @@ void setup()
 void loop()
 {
   static uint8_t  ticks = 0;
+  static uint8_t  old_ticks = 0;
+
 
   // put your main code here, to run repeatedly:
 
@@ -214,7 +219,7 @@ void loop()
           {
             ticks++;
 
-            Serial.print('Clock ');
+            Serial.print("Clock ");
             Serial.println(ticks);
           }
           break;
@@ -226,11 +231,13 @@ void loop()
           break;
         case midi::Continue :
           {
+            ticks = old_ticks;
             Serial.println("continuing");
           }
           break;
         case midi::Stop :
           {
+            old_ticks = ticks;
             Serial.println("Stopping");
           }
           break;
