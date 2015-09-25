@@ -11,15 +11,15 @@
 
 static const uint16_t DEBOUNCE_COUNT = 50;
 
-SoftwareSerial SoftSerial(8,9);
+//SoftwareSerial SoftSerial(8,9);
 
 /* Args: 
    - type of port to use (hard/soft)
    - port object name
    - name for this midi instance
 */
-//MIDI_CREATE_INSTANCE(HardwareSerial, Serial, MIDI);
-MIDI_CREATE_INSTANCE(SoftwareSerial, SoftSerial, MIDI);
+MIDI_CREATE_INSTANCE(HardwareSerial, Serial, MIDI);
+//MIDI_CREATE_INSTANCE(SoftwareSerial, SoftSerial, MIDI);
 
 bool running;
 bool send_start;

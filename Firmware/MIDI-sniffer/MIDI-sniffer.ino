@@ -34,8 +34,12 @@ void setup()
   // do I need to init the soft serial port?
   // No - MIDI Lib will do it.
 
+  // We want to receive messages on all channels
   MIDI.begin(MIDI_CHANNEL_OMNI);
-  MIDI.turnThruOff();
+  
+  // We also want to echo the input to the output, 
+  // so the sniffer can be dropped inline when things misbehave.
+  MIDI.turnThruOn();
 
   pinMode(PIN_RAW_INPUT, INPUT_PULLUP);
 
