@@ -1,23 +1,42 @@
-/* Werkstatt MIDI-CV interface
-   by: Byron Jacquot
-   SparkFun Electronics
-   date: October 9, 2014
-   license: Public Domain - please use this code however you'd like.
-   It's provided as a learning tool.
+/******************************************************************************
+MIDI-CV.ino
+MIDI to Control Voltage converter for synthesizers.
+Byron Jacquot, SparkFun Electronics
+October 2, 2015
+https://github.com/sparkfun/MIDI_Shield/tree/V_1.5/Firmware/MIDI-CV
 
+This functions as a MIODI-to-control voltage interface for analog synthesizers.
+It was developed for the Moog Werkstatt WS-01, but should work with any volt-per-octave
+synthesizer.
+
+Resources:
    This code is dependent on the FortySevenEffects MIDI library for Arduino.
    https://github.com/FortySevenEffects/arduino_midi_library
-   This was done using version 4.2, hash 352e3d10fb
-
+   This was done using version 4.2, hash fb693e724508cb8a473fa0bf1915101134206c34
+   This library is now under the MIT license, as well.
    You'll need to install that library into the Arduino IDE before compiling.
 
-   Please be aware that the FortySevenEffects MIDI library is licensed under
-   GPL version 3.0.
-*/
+   It is also dependent on the notemap class, stored in the same repository (notemap.cpp/h).
+
+Development environment specifics:
+It was developed for the Arduino Uno compatible SparkFun RedBoard, with a  SparkFun
+MISI Shield and a pair of Microchip MCP4725 DACs to generate the control voltages.
+Written and compiled in Arduino 1.6.5
+
+This code is released under the [MIT License](http://opensource.org/licenses/MIT).
+
+Please review the LICENSE.md file included with this example. If you have any questions 
+or concerns with licensing, please contact techsupport@sparkfun.com.
+
+Distributed as-is; no warranty is given.
+******************************************************************************/
 
 #include <SoftwareSerial.h>
+#include <MsTimer2.h>
 #include <MIDI.h>
 #include <Wire.h>
+
+#include "notemap.h"
 
 // Instantiate the MIDI interface using the macro
 // - HardwareSerial is the type of serial port to be used underneath
@@ -28,23 +47,35 @@
 SoftwareSerial SoftSerial(8, 9);
 MIDI_CREATE_INSTANCE(SoftwareSerial, SoftSerial, MIDI);
 
-// A pin to use for the gate output.
+// Functional assignments to Arduino pin numbers.
+// Digital outputs
 static const int GATEPIN = 10;
+static const int REDLEDPIN = 7;
+static const int GREENLEDPIN = 6;
+
+// Analog input
+static const int PIN_TEMPO_POT = 1;
+
+// Digital inputs
+static const int UPBTNPIN = 2;
+static const int DNBTNPIN  = 3;
+static const int SHORTBTNPIN= 4;
+static const int BTN_DEBOUNCE = 50;
 
 // global variables
 //
-// A bitmap to track all of the midi keys - 7-bits worth = 128 bits.
-// When we see a note-on, we'll set the corresponding bit.  When we see a note
-// off, we'll clear it.  When we need to update the CV, we'll find the
-// lowest bit set in the map.
-static uint8_t voice_map[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+// notemap tracks which note ons & offs we have seen.
+// We refer to it when it's time to generate CV and gate signals,
+static notemap themap;
 
-// The last key records the LUT index of the last key value we used.
+// Variable to store delay times for arpeggiator clock.
+static uint32_t tempo_delay = 10;
+static bool     send_tick = false;
+
 // The last bend records the most recently seen bend message.
 // We need to keep track so we can update note CV when we get new notes,
 // or new bend messages - we need the other half in order to put them together.
-static uint8_t last_key = 0;
-static int16_t last_bend = 0;//bend is signed?
+static int16_t last_bend = 0;//bend is unsigned, 14-bit
 
 // constants to describe the MIDI input.
 // NUM_KEYS is the number of keys we're interpreting
@@ -53,167 +84,15 @@ static const int8_t NUM_KEYS = 49;
 static const int8_t BASE_KEY = 36;
 
 
-// LUT for the key # to DAC value conversion.
-// This was calculated by the spreadsheet in the theory directory, and just
-// pasted in.
-//
-// The thinking here was that it would do 49 keys worth - a 4 octave keyboard.
-// It would start at about 0.5V, and go up to 4.5V.  The bender would then
-// add or subtract 0.5V to the key value, so the overall span is 5 octaves,
-// from 0V to 5V.
-static const uint16_t note_map[NUM_KEYS] =
-#if 0
-{
-  384,  448,  512,  576,  640,  704,  768,  832,  896,  960,  1024, 1088,
-  1152, 1216, 1280, 1344, 1408, 1472, 1536, 1600, 1664, 1728, 1792, 1856,
-  1920, 1984, 2048, 2112, 2176, 2240, 2304, 2368, 2432, 2496, 2560, 2624,
-  2688, 2752, 2816, 2880, 2944, 3008, 3072, 3136, 3200, 3264, 3328, 3392,
-  3456
-};
-  { //c    c#    d     d#    e     f     f#    g     g#    a     a#    b
-    410,  478,  546,  614,  683,  751,  819,  887,  956,  1024, 1092, 1161,
-    1229, 1297, 1365, 1434, 1502, 1570, 1638, 1707, 1775, 1843, 1911, 1980,
-    2048, 2116, 2185, 2253, 2321, 2389, 2458, 2526, 2594, 2662, 2731, 2799,
-    2867, 2935, 3004, 3072, 3140, 3209, 3277, 3345, 3413, 3482, 3550, 3618,
-    3686
-  };
-#else
-  {
-410	,
-478	,
-546	,
-614	,
-683	,
-751	,
-819	,
-887	,
-956	,
-1024	,
-1092	,
-1161	,
-1229	,
-1297	,
-1365	,
-1434	,
-1502	,
-1570	,
-1638	,
-1707	,
-1775	,
-1843	,
-1911	,
-1980	,
-2048	,
-2116	,
-2185	,
-2253	,
-2321	,
-2389	,
-2458	,
-2526	,
-2594	,
-2662	,
-2731	,
-2799	,
-2867	,
-2935	,
-3004	,
-3072	,
-3140	,
-3209	,
-3277	,
-3345	,
-3413	,
-3482	,
-3550	,
-3618	,
-3686	
-};
-#endif
-
-/////////////////////////////////////////////////////////////////////////
-// Note bitmap routines.
-// In a more ambitious version of this, the notemap would be a
-// class, and these would be the member functions.
-/////////////////////////////////////////////////////////////////////////
-
-// Print the bitmap
-void mapDebug()
-{
-  for (uint8_t i = 0; i < 16; i++)
-  {
-    Serial.print(voice_map[i], HEX);
-    Serial.print(' ');
-  }
-  Serial.println();
-}
-
-// Set a bit in the map
-void mapSet(uint8_t note)
-{
-  uint8_t idx = note / 8;
-  uint8_t pos = (note % 8) ;
-
-  voice_map[idx] |= (0x01 << pos);
-}
-
-// clear a bit in the map
-void mapClear(uint8_t note)
-{
-  uint8_t idx = note / 8;
-  uint8_t pos = (note % 8) ;
-
-  voice_map[idx] &= ~(0x01 << pos);
-}
-
-// Are any keys held?
-// If so return true, and return param insidacing which one.
-bool mapCheck(uint8_t & keynum)
-{
-  //Serial.print("Checkmap:");
-  //mapDebug();
-
-  // starting at bottom gives us low note priority.
-  // could alternately start from the top...
-  for (uint8_t i = 0; i < 16; i++)
-  {
-    if (voice_map[i] != 0x0)
-    {
-      // find the lowest bit set
-      uint8_t j, k;
-      for (j = 0x1, k = 0; k < 8; j <<= 1, k++)
-      {
-#if 0
-        Serial.print("j: ");
-        Serial.print(j);
-        Serial.print("k: ");
-        Serial.println(k);
-#endif
-        if (voice_map[i] & j)
-        {
-          keynum = (i * 8) + k ;
-
-          return true;
-        }
-      }
-    }
-  }
-
-  keynum = 0;
-  return false;
-}
-
-
-// CV can be updated by both pitch bend and note-on messages
-void updateCV()
-{
-//  uint16_t val = note_map[last_key];
-
+// Converts key number to DAC count value,
+// and sends the value tio the DAC
+void updateCV(uint8_t key)
+{  
 #if 0
   Serial.print("KEY: ");
-  Serial.print(last_key);
+  Serial.print(key);
 #endif
-  uint32_t val = 400ul + ((last_key * 6826ul)/100ul);
+  uint32_t val = 400ul + ((key * 6826ul)/100ul);
 
 #if 0  
   val = last_key * 6826ul;
@@ -242,39 +121,36 @@ void updateCV()
 }
 
 // Update otputs sets the outputs to the current conditions.
-// Called from note on & note off.
+// Called from note on, note off, arp tick.
 void updateOutputs()
 {
   uint8_t key;
 
-  if (mapCheck(key))
+  key = themap.whichKey();
+
+#if 0    
+  Serial.print("key: ");
+  Serial.println(key, HEX);
+#endif
+
+  // key is in terms of MIDI note number.
+  // Constraining the key number to 4 octave range
+  if (key < BASE_KEY)
   {
-    Serial.print("key: ");
-    Serial.println(key, HEX);
-
-    // key is in terms of MIDI note number.
-    // Constraining the key number to the range of valid indices for the LUT.
-    if (key < BASE_KEY)
-    {
-      last_key = 0;
-    }
-    else if ( key > BASE_KEY + NUM_KEYS)
-    {
-      last_key = NUM_KEYS;
-    }
-    else
-    {
-      last_key = key - BASE_KEY;
-    }
-
-    updateCV();
-
-    digitalWrite(GATEPIN, HIGH);
+    key = 0;
+  }
+  else if ( key > BASE_KEY + NUM_KEYS)
+  {
+    key = NUM_KEYS;
   }
   else
   {
-    digitalWrite(GATEPIN, LOW);
+    key -= BASE_KEY;
   }
+
+  updateCV(key);
+
+  digitalWrite(GATEPIN, themap.getGate());
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -291,7 +167,7 @@ void handleNoteOn(byte channel, byte pitch, byte velocity)
   Serial.print("on: ");
   Serial.println(pitch , HEX);
 
-  mapSet(pitch);
+  themap.setKey(pitch);
 
   updateOutputs();
 
@@ -304,7 +180,7 @@ void handleNoteOff(byte channel, byte pitch, byte velocity)
   Serial.print("off: ");
   Serial.println(pitch , HEX);
 
-  mapClear(pitch);
+  themap.clearKey(pitch);
 
   updateOutputs();
 
@@ -316,8 +192,10 @@ void handlePitchBend(byte channel, int bend)
   Serial.print("bend: ");
   Serial.println(bend , HEX);
 #endif
-  // Bend is 14 bits, signed
-  // dual-7-bit thwacking already handled by midi parser
+  // Bend data from the parser is 14 bits, signed, centered
+  // on 0.
+  // unsigned conversion & dual-7-bit thwacking 
+  // already handled by midi parser
 
   last_bend = bend >> 5;
 
@@ -326,22 +204,24 @@ void handlePitchBend(byte channel, int bend)
   Serial.println(last_bend, HEX);
 #endif
 
-  updateCV();
+  updateOutputs();
 }
 
 void handleCC(byte channel, byte number, byte value)
 {
+#if 1
   Serial.print("cc: ");
   Serial.print(number);
   Serial.print(" chan: ");
   Serial.print(channel, HEX);
   Serial.print("val: ");
   Serial.println(value, HEX);
+#endif
 
   switch (number)
   {
     case 1:
-      {
+      { // Mod wheel
 
         Wire.beginTransmission(0x61);
         // Turn 7 bits into 12
@@ -360,21 +240,156 @@ void handleCC(byte channel, byte number, byte value)
 }
 
 /////////////////////////////////////////////////////////////////////////
+// millisecond timer related
+/////////////////////////////////////////////////////////////////////////
+
+void timer_callback()
+{
+
+  // Tell the mainline loop that time has elapsed
+  send_tick = true;
+}
+
+void tick_func()
+{
+  // Called by mainline loop when send_tick is true.
+  
+  static uint8_t counter = 0;  
+
+  counter++;
+
+  if(counter & 0x01)
+  {
+    digitalWrite(REDLEDPIN, HIGH);
+
+    themap.tickArp(false);
+    updateOutputs();
+  }
+  else
+  {
+    digitalWrite(REDLEDPIN, LOW);
+
+    themap.tickArp(true);
+    updateOutputs();
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////
+// Panel interface control routines
+/////////////////////////////////////////////////////////////////////////
+
+void check_pots()
+{
+  uint32_t pot_val;
+  uint32_t calc;
+  
+  pot_val = analogRead(PIN_TEMPO_POT);
+  
+  // Result is 10 bits
+  //calc = (((0x3ff - pot_val) * 75)/1023) + 8;
+  calc = (((0x3ff - pot_val) * 1800)/1023) + 25;
+  
+  tempo_delay = calc  ;
+
+}
+
+void up_btn_func()
+{
+  Serial.println("Up!");
+
+  if(themap.getMode() == notemap::ARP_UP)
+  {
+    themap.setMode(notemap::NORMAL);
+  }
+  else
+  {
+    themap.setMode(notemap::ARP_UP);
+  }
+}
+
+void dn_btn_func()
+{
+  Serial.println("Dn!");
+  if(themap.getMode() == notemap::ARP_DN)
+  {
+    themap.setMode(notemap::NORMAL);
+  }
+  else
+  {
+    themap.setMode(notemap::ARP_DN);
+  }
+}
+
+void short_btn_func()
+{
+  Serial.print("Short!");
+
+  if(themap.getShort())
+  {
+    themap.setShort(false);
+    Serial.print(" off");
+  }
+  else
+  {
+    themap.setShort(true);
+    Serial.println(" on");
+  }
+}
+
+void(*func_array[3])(void) = 
+{
+  up_btn_func,
+  dn_btn_func,
+  short_btn_func
+};
+
+void check_buttons()
+{
+  static uint8_t deb_array[3];
+  uint8_t val;
+
+  for(uint8_t i = 0; i < 3; i++)
+  {
+    // active low, pulled high
+    val = digitalRead(i + UPBTNPIN);
+
+    if(val == LOW)
+    {
+      if(deb_array[i] < BTN_DEBOUNCE+1)
+      {
+        deb_array[i]++;
+
+        if(deb_array[i] == BTN_DEBOUNCE)
+        {
+          (*func_array[i])();
+        }
+      }
+    }
+    else
+    {
+      deb_array[i] = 0;
+    }
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////
 // Arduino boilerplate - setup() & loop()
 /////////////////////////////////////////////////////////////////////////
 
 void setup()
 {
-  pinMode(GATEPIN, OUTPUT);  // Set RX LED as an output
-  // TX LED is set as an output behind the scenes
+  // LED pins
+  pinMode(GATEPIN, OUTPUT);   
+  pinMode(REDLEDPIN, OUTPUT);
 
-  Serial.begin(9600); //This pipes to the serial monitor
-  // Serial1.begin(31250, SERIAL_8N1); //This is the UART, pipes to sensors attached to board
+  // Button pins
+  pinMode(UPBTNPIN, INPUT_PULLUP);
+  pinMode(DNBTNPIN, INPUT_PULLUP);
+  pinMode(SHORTBTNPIN, INPUT_PULLUP);
+
+  Serial.begin(115200); //This pipes to the serial monitor
 
   Wire.begin();
-#define TWI_FREQ_NUNCHUCK 800000L
-  TWBR = ((F_CPU / TWI_FREQ_NUNCHUCK) - 16) / 2;
-
 
   // Initiate MIDI communications, listen to all channels
   // .begin sets the thru mode to on, so we'll have to turn it off if we don't want echo
@@ -389,6 +404,8 @@ void setup()
   MIDI.setHandleControlChange(handleCC);
   MIDI.setHandlePitchBend(handlePitchBend);
 
+  MsTimer2::set(tempo_delay, timer_callback);
+  MsTimer2::start();
 
   Serial.println("setup complete");
 }
@@ -398,6 +415,23 @@ void loop()
   // Pump the MIDI parser as quickly as we can.
   // This will invoke the callbacks when messages are parsed.
   MIDI.read();
+
+  // check the tempo pot.
+  check_pots();
+
+  // 
+  check_buttons();
+  
+  if(send_tick)
+  {
+    send_tick = false;
+    
+    tick_func();
+
+    MsTimer2::stop();
+    MsTimer2::set(tempo_delay, timer_callback);
+    MsTimer2::start();
+  }
 
 }
 
