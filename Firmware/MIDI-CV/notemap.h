@@ -6,47 +6,66 @@
 class notemap
 {
   public:
-    notemap();
-  
-    enum map_mode {NORMAL, ARP_UP, ARP_DN};
-    void setMode(notemap::map_mode m);
-    notemap::map_mode getMode();
 
-    void setShort(bool short_on);
-    bool getShort();
+         notemap();
 
     void debug();
-    void setKey(uint8_t note);
-    void clearKey(uint8_t note);
+
+    void setBit(uint8_t note);
+    void clearBit(uint8_t note);
+    void clearAll();
+
     bool isBitSet(uint8_t note);
+
+    uint8_t getNumBits();
     uint8_t getLowest();
-    uint8_t getNext(uint8_t start);
 
-    void setSustain(bool);
+  private:
 
-    void tickArp(bool);
+    uint8_t keys[16];
+    uint8_t numKeys;
+};
 
-    uint8_t whichKey();
+class notetracker
+{
+  public:
+    notetracker();
+  
+    enum tracker_mode {NORMAL, ARP_UP, ARP_DN};
 
-    uint8_t getNumKeysHeld();
-    uint8_t getLastKey();
+    void                  noteOn(uint8_t key);
+    void                  noteOff(uint8_t key);
+    
+    void                  setMode(notetracker::tracker_mode m);
+    notetracker::tracker_mode getMode();
 
-    bool    getGate();
+    void                  setShort(bool short_on);
+    bool                  getShort();
+
+    //uint8_t               getLowest();
+    uint8_t               getNext(uint8_t start);
+
+    void                  setSustain(bool);
+
+    void                  tickArp(bool);
+
+    uint8_t               whichKey();
+
+    uint8_t               getLastKey();
+
+    bool                  getGate();
     
   private:
 
-    uint8_t * getActiveMap();
-    uint8_t   getNumActiveKeys();
-
-    map_mode mode;
+    tracker_mode mode;
+    
     bool     staccato;
     bool     sustaining;
-    bool     clk_on;
+    bool     clk_hi;
 
-    uint8_t voice_map[16];
-    uint8_t sustain_map[16];
-    uint8_t num_keys_held;
-    uint8_t num_keys_sustaining;
+    notemap voice_map;
+    notemap sustain_map;
+    notemap * active_map_p;
     
     uint8_t last_key;
 };

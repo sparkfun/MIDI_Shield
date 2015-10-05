@@ -67,7 +67,7 @@ static const int BTN_DEBOUNCE = 50;
 //
 // notemap tracks which note ons & offs we have seen.
 // We refer to it when it's time to generate CV and gate signals,
-static notemap themap;
+static notetracker themap;
 
 // Variable to store delay times for arpeggiator clock.
 static uint32_t tempo_delay = 10;
@@ -168,7 +168,7 @@ void handleNoteOn(byte channel, byte pitch, byte velocity)
   Serial.print("on: ");
   Serial.println(pitch , HEX);
 
-  themap.setKey(pitch);
+  themap.noteOn(pitch);
 
   updateOutputs();
 
@@ -181,7 +181,7 @@ void handleNoteOff(byte channel, byte pitch, byte velocity)
   Serial.print("off: ");
   Serial.println(pitch , HEX);
 
-  themap.clearKey(pitch);
+  themap.noteOff(pitch);
 
   updateOutputs();
 
@@ -302,26 +302,26 @@ void up_btn_func()
 {
   Serial.println("Up!");
 
-  if(themap.getMode() == notemap::ARP_UP)
+  if(themap.getMode() == notetracker::ARP_UP)
   {
-    themap.setMode(notemap::NORMAL);
+    themap.setMode(notetracker::NORMAL);
   }
   else
   {
-    themap.setMode(notemap::ARP_UP);
+    themap.setMode(notetracker::ARP_UP);
   }
 }
 
 void dn_btn_func()
 {
   Serial.println("Dn!");
-  if(themap.getMode() == notemap::ARP_DN)
+  if(themap.getMode() == notetracker::ARP_DN)
   {
-    themap.setMode(notemap::NORMAL);
+    themap.setMode(notetracker::NORMAL);
   }
   else
   {
-    themap.setMode(notemap::ARP_DN);
+    themap.setMode(notetracker::ARP_DN);
   }
 }
 
