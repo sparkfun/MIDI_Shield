@@ -8,12 +8,14 @@ notemap::notemap()
 
   mode = NORMAL;
   staccato = false;
+  sustaining = false;
 
   for( uint8_t i = 0; i < 16; i++)
   {
     voice_map[i] = 0;
   }
   num_keys_held = 0;
+  num_keys_sustaining = 0;
   last_key = 0;
 }
 
@@ -45,6 +47,31 @@ bool notemap::getShort()
 // class, and these would be the member functions.
 /////////////////////////////////////////////////////////////////////////
 
+uint8_t * notemap::getActiveMap()
+{    
+  if(sustaining)
+  {
+    return sustain_map;
+  }
+  else
+  {
+    return voice_map;
+  }
+}
+
+uint8_t  notemap::getNumActiveKeys()
+{
+  if(sustaining)
+  {
+    return num_keys_sustaining;
+  }
+  else
+  {
+    return num_keys_held;
+  }
+
+}
+
 // Print the bitmap
 void notemap::debug()
 {
@@ -63,6 +90,12 @@ void notemap::setKey(uint8_t note)
   uint8_t pos = (note % 8) ;
 
   voice_map[idx] |= (0x01 << pos);
+
+  if(sustaining)
+  {
+    sustain_map[idx] |= (0x01 << pos);
+    num_keys_sustaining++;
+  }
 
   num_keys_held ++;
 }
@@ -83,7 +116,7 @@ bool notemap::isBitSet(uint8_t note)
   uint8_t idx = note / 8;
   uint8_t pos = (note % 8) ;
 
-  return( voice_map[idx] & (0x01 << pos));
+  return( getActiveMap()[idx] & (0x01 << pos));
 }
 
 uint8_t notemap::getNumKeysHeld()
@@ -109,7 +142,7 @@ uint8_t notemap::getLowest()
   // could alternately start from the top...
   for (uint8_t i = 0; i < 16; i++)
   {
-    if (voice_map[i] != 0x0)
+    if (getActiveMap()[i] != 0x0)
     {
       // find the lowest bit set
       uint8_t j, k;
@@ -121,7 +154,7 @@ uint8_t notemap::getLowest()
         Serial.print("k: ");
         Serial.println(k);
 #endif
-        if (voice_map[i] & j)
+        if (getActiveMap()[i] & j)
         {
           keynum = (i * 8) + k ;
 
@@ -162,10 +195,40 @@ uint8_t notemap::getNext(uint8_t start)
   return start;
 }
 
+void notemap::setSustain(bool on)
+{
+
+  Serial.print("Sustain: ");
+  Serial.println(on);
+
+  if(on)
+  {
+    sustaining = true;
+
+    num_keys_sustaining = num_keys_held;
+    for(uint8_t i = 0; i < 16; i++)
+    {
+      sustain_map[i] = voice_map[i];
+    }
+  }
+  else
+  {
+    sustaining = false;
+
+    num_keys_sustaining = 0;
+    for(uint8_t i = 0; i < 16; i++)
+    {
+      sustain_map[i] = 0;
+    }
+  }
+}
+
 
 uint8_t notemap::whichKey()
 {
-  if(num_keys_held == 0)
+  uint8_t num_keys = getNumActiveKeys();
+  
+  if(num_keys == 0)
   {
     return last_key;
   }
@@ -178,7 +241,7 @@ uint8_t notemap::whichKey()
       // immediately.
       // If multiple keys are held, advanceArp() sets last_key
       // based on timer. 
-      if(num_keys_held == 1)
+      if(num_keys == 1)
       {
         last_key = getLowest();
       }
@@ -186,7 +249,7 @@ uint8_t notemap::whichKey()
     break;
     case ARP_DN:
     {
-      if(num_keys_held == 1)
+      if(num_keys == 1)
       {
         last_key = getLowest();
       }
@@ -209,7 +272,7 @@ void notemap::tickArp(bool rising)
   {  
     clk_on = true;
     
-    if(num_keys_held > 1)
+    if(getNumActiveKeys() > 1)
     {
       last_key = getNext(last_key);
     }
@@ -222,13 +285,24 @@ void notemap::tickArp(bool rising)
 
 bool notemap::getGate()
 {
-  if(staccato)
+  uint8_t num_active;
+
+  if(sustaining)
   {
-    return clk_on & (num_keys_held > 0);
+    num_active = num_keys_sustaining;
   }
   else
   {
-    return (num_keys_held > 0);
+    num_active = num_keys_held;
+  }
+  
+  if(staccato)
+  {
+    return clk_on & (num_active > 0);
+  }
+  else
+  {
+    return (num_active > 0);
   }
 }
 

@@ -22,6 +22,8 @@ class notemap
     uint8_t getLowest();
     uint8_t getNext(uint8_t start);
 
+    void setSustain(bool);
+
     void tickArp(bool);
 
     uint8_t whichKey();
@@ -33,12 +35,19 @@ class notemap
     
   private:
 
+    uint8_t * getActiveMap();
+    uint8_t   getNumActiveKeys();
+
     map_mode mode;
     bool     staccato;
+    bool     sustaining;
     bool     clk_on;
 
     uint8_t voice_map[16];
+    uint8_t sustain_map[16];
     uint8_t num_keys_held;
+    uint8_t num_keys_sustaining;
+    
     uint8_t last_key;
 };
 

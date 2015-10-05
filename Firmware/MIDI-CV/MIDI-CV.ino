@@ -5,23 +5,24 @@ Byron Jacquot, SparkFun Electronics
 October 2, 2015
 https://github.com/sparkfun/MIDI_Shield/tree/V_1.5/Firmware/MIDI-CV
 
-This functions as a MIODI-to-control voltage interface for analog synthesizers.
+This functions as a MIDI-to-control voltage interface for analog synthesizers.
 It was developed for the Moog Werkstatt WS-01, but should work with any volt-per-octave
 synthesizer.
 
 Resources:
-   This code is dependent on the FortySevenEffects MIDI library for Arduino.
-   https://github.com/FortySevenEffects/arduino_midi_library
-   This was done using version 4.2, hash fb693e724508cb8a473fa0bf1915101134206c34
-   This library is now under the MIT license, as well.
-   You'll need to install that library into the Arduino IDE before compiling.
+    This code is dependent on the FortySevenEffects MIDI library for Arduino.
+    https://github.com/FortySevenEffects/arduino_midi_library
+    This was done using version 4.2, hash fb693e724508cb8a473fa0bf1915101134206c34
+    This library is now under the MIT license, as well.
+    You'll need to install that library into the Arduino IDE before compiling.
 
-   It is also dependent on the notemap class, stored in the same repository (notemap.cpp/h).
+    It is also dependent on the notemap class, stored in the same repository (notemap.cpp/h).
 
 Development environment specifics:
-It was developed for the Arduino Uno compatible SparkFun RedBoard, with a  SparkFun
-MISI Shield and a pair of Microchip MCP4725 DACs to generate the control voltages.
-Written and compiled in Arduino 1.6.5
+    It was developed for the Arduino Uno compatible SparkFun RedBoard, with a  SparkFun
+    MIDI Shield and a pair of Microchip MCP4725 DACs to generate the control voltages.
+    
+    Written, compiled and loaded with Arduino 1.6.5
 
 This code is released under the [MIT License](http://opensource.org/licenses/MIT).
 
@@ -221,15 +222,19 @@ void handleCC(byte channel, byte number, byte value)
   switch (number)
   {
     case 1:
-      { // Mod wheel
+    { // Mod wheel
 
-        Wire.beginTransmission(0x61);
-        // Turn 7 bits into 12
-        Wire.write(byte((value & 0x70) >> 3));
-        Wire.write(byte((value & 0x0f) << 4));
-        Wire.endTransmission();
-      };
-      break;
+      Wire.beginTransmission(0x61);
+      // Turn 7 bits into 12
+      Wire.write(byte((value & 0x70) >> 3));
+      Wire.write(byte((value & 0x0f) << 4));
+      Wire.endTransmission();
+    };
+    break;
+    case 64:
+    { // sustain pedal
+      themap.setSustain( (value != 0) );            
+    }
 
     // Other CC's would line up here...
 
