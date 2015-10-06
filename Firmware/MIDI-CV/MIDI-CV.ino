@@ -65,18 +65,19 @@ static const int BTN_DEBOUNCE = 50;
 
 // global variables
 //
-// notemap tracks which note ons & offs we have seen.
+// notetracker knows which note ons & offs we have seen.
 // We refer to it when it's time to generate CV and gate signals,
 static notetracker themap;
 
-// Variable to store delay times for arpeggiator clock.
+// Variables for arpeggiator clock.
 static uint32_t tempo_delay = 10;
 static bool     send_tick = false;
 
 // The last bend records the most recently seen bend message.
 // We need to keep track so we can update note CV when we get new notes,
 // or new bend messages - we need the other half in order to put them together.
-static int16_t last_bend = 0;//bend is unsigned, 14-bit
+// bend is signed, 14-bit
+static int16_t last_bend = 0;
 
 // constants to describe the MIDI input.
 // NUM_KEYS is the number of keys we're interpreting
@@ -85,8 +86,12 @@ static const int8_t NUM_KEYS = 49;
 static const int8_t BASE_KEY = 36;
 
 
-// Converts key number to DAC count value,
-// and sends the value tio the DAC
+/* 
+ *  void updateCV(uint8_t key)
+ *  
+ *Converts key number to DAC count value,
+ *and sends the value tio the DAC
+ */ 
 void updateCV(uint8_t key)
 {  
 #if 0
@@ -121,8 +126,12 @@ void updateCV(uint8_t key)
 
 }
 
-// Update otputs sets the outputs to the current conditions.
-// Called from note on, note off, arp tick.
+/*
+ * void updateOutputs()
+ * 
+ *  Update otputs sets the outputs to the current conditions.
+ *  Called from note on, note off, arp tick.
+ */
 void updateOutputs()
 {
   uint8_t key;
@@ -136,6 +145,7 @@ void updateOutputs()
 
   // key is in terms of MIDI note number.
   // Constraining the key number to 4 octave range
+  // Soc we can do 4 Volts +/- ~0.5V bend range.
   if (key < BASE_KEY)
   {
     key = 0;
@@ -158,6 +168,10 @@ void updateOutputs()
 // Callbacks for the MIDI parser
 /////////////////////////////////////////////////////////////////////////
 
+/* void handleNoteOn(byte channel, byte pitch, byte velocity)
+ *  
+ *  Called by MIDI parser when note on messages arrive.
+ */
 void handleNoteOn(byte channel, byte pitch, byte velocity)
 {
   // Do whatever you want when a note is pressed.
@@ -174,6 +188,10 @@ void handleNoteOn(byte channel, byte pitch, byte velocity)
 
 }
 
+/* void handleNoteOff(byte channel, byte pitch, byte velocity)
+ *  
+ *  Called by MIDI parser when note off messages arrive.
+ */
 void handleNoteOff(byte channel, byte pitch, byte velocity)
 {
   // Do something when the note is released.
@@ -184,9 +202,12 @@ void handleNoteOff(byte channel, byte pitch, byte velocity)
   themap.noteOff(pitch);
 
   updateOutputs();
-
 }
 
+/*void handlePitchBend(byte channel, int bend)
+ * 
+ * Called by parser when bend messages arrive.
+ */
 void handlePitchBend(byte channel, int bend)
 {
 #if  1
@@ -208,6 +229,10 @@ void handlePitchBend(byte channel, int bend)
   updateOutputs();
 }
 
+/* void handleCC(byte channel, byte number, byte value)
+ *  
+ *  Called by parser when continuous controller message arrive
+ */
 void handleCC(byte channel, byte number, byte value)
 {
 #if 1
@@ -246,19 +271,24 @@ void handleCC(byte channel, byte number, byte value)
 
 /////////////////////////////////////////////////////////////////////////
 // millisecond timer related
-/////////////////////////////////////////////////////////////////////////
+//
+// See documentation for MStimer2 (http://playground.arduino.cc/Main/MsTimer2).
+////////////////////////////////////////////////////////////////////////
 
 void timer_callback()
 {
-
   // Tell the mainline loop that time has elapsed
   send_tick = true;
 }
 
+/* void tick_func()
+ *  
+ * Called by mainline loop when send_tick is true.
+ * Keeps track of rising/falling edges, and notifies notetracker
+ * of clock status.
+ */
 void tick_func()
 {
-  // Called by mainline loop when send_tick is true.
-  
   static uint8_t counter = 0;  
 
   counter++;
@@ -283,6 +313,10 @@ void tick_func()
 // Panel interface control routines
 /////////////////////////////////////////////////////////////////////////
 
+/*void check_pots()
+ * 
+ * Read the analog input (tempo control)
+ */
 void check_pots()
 {
   uint32_t pot_val;
@@ -298,6 +332,13 @@ void check_pots()
 
 }
 
+/* void up_btn_func()
+ *  
+ *  Called when button reader detects arpeggio up button has been pressed.
+ *  
+ *  If not in up mode, turn on up mode.
+ *  If in up mode, stops arpeggiator.
+ */
 void up_btn_func()
 {
   Serial.println("Up!");
@@ -312,6 +353,13 @@ void up_btn_func()
   }
 }
 
+/* void dn_btn_func()
+ *  
+ *  Called when button reader detects arpeggio up button has been pressed.
+ *  
+ *  If not in dn mode, turn on up mode.
+ *  If in dn mode, stops arpeggiator.
+ */
 void dn_btn_func()
 {
   Serial.println("Dn!");
@@ -325,6 +373,11 @@ void dn_btn_func()
   }
 }
 
+/* void short_btn_func()
+ *  
+ *  Toggles staccato articulations
+ *  Works independently of arpeggiator enablement.
+ */
 void short_btn_func()
 {
   Serial.print("Short!");
@@ -341,6 +394,9 @@ void short_btn_func()
   }
 }
 
+/* Button behavior function array for ease of referencing using index
+ *  
+ */
 void(*func_array[3])(void) = 
 {
   up_btn_func,
@@ -348,6 +404,16 @@ void(*func_array[3])(void) =
   short_btn_func
 };
 
+/* void check_buttons()
+ *  
+ *  Implements debounced button polling for the 3 buttons on then MIDI shield.
+ *  
+ *  Buttons are active low, pulled up.
+ *  On a poll cycle, reads each button.
+ *  If button is pressed (LOW), it counts up.
+ *  If button is held for enough cycles, it calls the indirect routine for the button.
+ *  When button is released, debounce counter clears.
+ */
 void check_buttons()
 {
   static uint8_t deb_array[3];
@@ -424,7 +490,7 @@ void loop()
   // check the tempo pot.
   check_pots();
 
-  // 
+  // check panel buttons
   check_buttons();
   
   if(send_tick)
