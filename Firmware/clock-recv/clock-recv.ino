@@ -1,3 +1,37 @@
+/******************************************************************************
+clock-recv.ino
+Use SparkFun MIDI Shield as a MIDI clock receiver.
+
+Byron Jacquot, SparkFun Electronics
+October 8, 2015
+https://github.com/sparkfun/MIDI_Shield/tree/V_1.5/Firmware/clock-recv
+
+Listenn for clock/start/stop/continue messages on the MIDI input
+
+Resources:
+
+  This sketch has a clock generating counterpart in clock-gen.ino
+
+  This code is dependent on the FortySevenEffects MIDI library for Arduino.
+  https://github.com/FortySevenEffects/arduino_midi_library
+  This was done using version 4.2, hash fb693e724508cb8a473fa0bf1915101134206c34
+  This library is now under the MIT license, as well.
+  You'll need to install that library into the Arduino IDE before compiling.
+  
+    
+Development environment specifics:
+  It was developed for the Arduino Uno compatible SparkFun RedBoard, with a  SparkFun
+  MIDI Shield.
+    
+  Written, compiled and loaded with Arduino 1.6.5
+
+This code is released under the [MIT License](http://opensource.org/licenses/MIT).
+
+Please review the LICENSE.md file included with this example. If you have any questions 
+or concerns with licensing, please contact techsupport@sparkfun.com.
+
+Distributed as-is; no warranty is given.
+******************************************************************************/
 #include <SoftwareSerial.h>
 #include <MsTimer2.h>
 #include <MIDI.h>

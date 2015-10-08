@@ -10,19 +10,19 @@ It was developed for the Moog Werkstatt WS-01, but should work with any volt-per
 synthesizer.
 
 Resources:
-    This code is dependent on the FortySevenEffects MIDI library for Arduino.
-    https://github.com/FortySevenEffects/arduino_midi_library
-    This was done using version 4.2, hash fb693e724508cb8a473fa0bf1915101134206c34
-    This library is now under the MIT license, as well.
-    You'll need to install that library into the Arduino IDE before compiling.
+  This code is dependent on the FortySevenEffects MIDI library for Arduino.
+  https://github.com/FortySevenEffects/arduino_midi_library
+  This was done using version 4.2, hash fb693e724508cb8a473fa0bf1915101134206c34
+  This library is now under the MIT license, as well.
+  You'll need to install that library into the Arduino IDE before compiling.
 
-    It is also dependent on the notemap class, stored in the same repository (notemap.cpp/h).
+  It is also dependent on the notemap class, stored in the same repository (notemap.cpp/h).
 
 Development environment specifics:
-    It was developed for the Arduino Uno compatible SparkFun RedBoard, with a  SparkFun
-    MIDI Shield and a pair of Microchip MCP4725 DACs to generate the control voltages.
+  It was developed for the Arduino Uno compatible SparkFun RedBoard, with a  SparkFun
+  MIDI Shield and a pair of Microchip MCP4725 DACs to generate the control voltages.
     
-    Written, compiled and loaded with Arduino 1.6.5
+  Written, compiled and loaded with Arduino 1.6.5
 
 This code is released under the [MIT License](http://opensource.org/licenses/MIT).
 
@@ -39,14 +39,22 @@ Distributed as-is; no warranty is given.
 
 #include "notemap.h"
 
+// VERBOSE mode switches MIDI to use soft serial on pins 8 & 9,
+// and enables a bunch of debug print messages.
+#define VERBOSE 0
+
 // Instantiate the MIDI interface using the macro
 // - HardwareSerial is the type of serial port to be used underneath
 // the MIDI routines.
 // - Serial1 is the name of that portto be used.  On a pro-micro, "Serial"
 // is the USB serial port, and "Serial1" is the hardware UART.
 // - "MIDI" parameter is the resulting object name.
+#if VERBOSE
 SoftwareSerial SoftSerial(8, 9);
 MIDI_CREATE_INSTANCE(SoftwareSerial, SoftSerial, MIDI);
+#else
+MIDI_CREATE_INSTANCE(HardwareSerial, Serial, MIDI);
+#endif
 
 // Functional assignments to Arduino pin numbers.
 // Digital outputs
@@ -85,6 +93,15 @@ static int16_t last_bend = 0;
 static const int8_t NUM_KEYS = 49;
 static const int8_t BASE_KEY = 36;
 
+// The tuning constant - representing the DAC conts per semitone
+//
+// Arrived at using: (((2^<DAC resolution>)/5)/12) * 100
+//
+// 2^12 = 4096 total DAC counts.
+// 4096/5 = 819.2 DAC counts per volt on a 5V supply
+// 819.2/12 = dac counts per semitone = 68.26
+// times 100 for some extra calculation precision = 6826
+static const uint32_t DAC_CAL = 6826;
 
 /* 
  *  void updateCV(uint8_t key)
@@ -94,13 +111,13 @@ static const int8_t BASE_KEY = 36;
  */ 
 void updateCV(uint8_t key)
 {  
-#if 0
+#if VERBOSE
   Serial.print("KEY: ");
   Serial.print(key);
 #endif
-  uint32_t val = 400ul + ((key * 6826ul)/100ul);
+  uint32_t val = 400ul + ((key * DAC_CAL)/100ul);
 
-#if 0  
+#if VERBOSE  
   val = last_key * 6826ul;
   Serial.print(" VALa: ");
   Serial.print(val, HEX);
@@ -138,7 +155,7 @@ void updateOutputs()
 
   key = themap.whichKey();
 
-#if 0    
+#if VERBOSE
   Serial.print("key: ");
   Serial.println(key, HEX);
 #endif
@@ -210,7 +227,7 @@ void handleNoteOff(byte channel, byte pitch, byte velocity)
  */
 void handlePitchBend(byte channel, int bend)
 {
-#if  1
+#if VERBOSE
   Serial.print("bend: ");
   Serial.println(bend , HEX);
 #endif
@@ -221,7 +238,7 @@ void handlePitchBend(byte channel, int bend)
 
   last_bend = bend >> 5;
 
-#if 0
+#if VERBOSE
   Serial.print("newbend: ");
   Serial.println(last_bend, HEX);
 #endif
@@ -235,7 +252,7 @@ void handlePitchBend(byte channel, int bend)
  */
 void handleCC(byte channel, byte number, byte value)
 {
-#if 1
+#if VERBOSE
   Serial.print("cc: ");
   Serial.print(number);
   Serial.print(" chan: ");
@@ -341,14 +358,18 @@ void check_pots()
  */
 void up_btn_func()
 {
+#if VERBOSE  
   Serial.println("Up!");
+#endif
 
   if(themap.getMode() == notetracker::ARP_UP)
   {
+    digitalWrite(GREENLEDPIN, HIGH);
     themap.setMode(notetracker::NORMAL);
   }
   else
   {
+    digitalWrite(GREENLEDPIN, LOW);
     themap.setMode(notetracker::ARP_UP);
   }
 }
@@ -362,13 +383,18 @@ void up_btn_func()
  */
 void dn_btn_func()
 {
+#if VERBOSE  
   Serial.println("Dn!");
+#endif
+  
   if(themap.getMode() == notetracker::ARP_DN)
   {
+    digitalWrite(GREENLEDPIN, HIGH);
     themap.setMode(notetracker::NORMAL);
   }
   else
   {
+    digitalWrite(GREENLEDPIN, LOW);
     themap.setMode(notetracker::ARP_DN);
   }
 }
@@ -380,17 +406,17 @@ void dn_btn_func()
  */
 void short_btn_func()
 {
+#if VERBOSE  
   Serial.print("Short!");
+#endif
 
   if(themap.getShort())
   {
     themap.setShort(false);
-    Serial.print(" off");
   }
   else
   {
     themap.setShort(true);
-    Serial.println(" on");
   }
 }
 
@@ -449,9 +475,13 @@ void check_buttons()
 
 void setup()
 {
-  // LED pins
+  // Output pins
   pinMode(GATEPIN, OUTPUT);   
   pinMode(REDLEDPIN, OUTPUT);
+  pinMode(GREENLEDPIN, OUTPUT);
+
+  digitalWrite(REDLEDPIN, HIGH);
+  digitalWrite(GREENLEDPIN, HIGH);
 
   // Button pins
   pinMode(UPBTNPIN, INPUT_PULLUP);

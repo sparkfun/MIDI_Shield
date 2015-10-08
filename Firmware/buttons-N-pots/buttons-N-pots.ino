@@ -1,3 +1,33 @@
+/******************************************************************************
+buttons-N-pots.ino
+Test the physical controls on SparkFun MIDI Shield.
+
+Byron Jacquot, SparkFun Electronics
+October 8, 2015
+https://github.com/sparkfun/MIDI_Shield/tree/V_1.5/Firmware/buttons-N-pots
+
+A quick test to show that the bottons and pots on the MIDI Shield are functional.
+Reads their values, and prints out reports when they change.
+
+It doesn't exercise any of the MIDI functionality.  See the other 
+sketches for MIDI examples:
+https://github.com/sparkfun/MIDI_Shield/tree/V_1.5/Firmware
+
+Development environment specifics:
+  It was developed for the Arduino Uno compatible SparkFun RedBoard, with a  SparkFun
+  MIDI Shield.
+    
+  Written, compiled and loaded with Arduino 1.6.5
+
+This code is released under the [MIT License](http://opensource.org/licenses/MIT).
+
+Please review the LICENSE.md file included with this example. If you have any questions 
+or concerns with licensing, please contact techsupport@sparkfun.com.
+
+Distributed as-is; no warranty is given.
+******************************************************************************/
+
+
 static const uint8_t PIN_BTN0 = 2;
 static const uint8_t PIN_BTN1 = 3;
 static const uint8_t PIN_BTN2 = 4;
