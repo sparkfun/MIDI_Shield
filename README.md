@@ -1,19 +1,39 @@
-MIDI Shield
-===========
+SparkFun MIDI Shield
+====================
 
 ![SparkFun MIDI Shield](https://cdn.sparkfun.com//assets/parts/3/4/1/0/09595-01.jpg)
-[*SparkFun MIDI Shield (DEV-09595)*](https://www.sparkfun.com/products/9595)
+
+[*SparkFun MIDI Shield (DEV-12898)*](https://cdn.sparkfun.com//assets/parts/9/7/9/8/12898-05.jpg)
 
 The MIDI Shield gives your Arduino access to the MIDI communication protocol, so you can control synthesizers, sequencers, and other musical devices.
 
 Repository Contents
 -------------------
 
-* **/Firmware** - Example Arduino .pde sketch
+* **/Firmware** - Example Arduino .ino sketch
 * **/Hardware** - All Eagle design files (.brd, .sch)
+* **/Production** - Production panel files (.brd)
+
+
+Product Versions
+----------------
+* [DEV-12898](https://www.sparkfun.com/products/12898)- Version 1.5. R3 compatible. Currently live. 
+* [DEV-09595] (https://www.sparkfun.com/products/retired/9595)- Version 1.3. Retired. 
+
+Version History
+---------------
+* [V_1.5](https://github.com/sparkfun/MIDI_Shield/tree/V_1.5) - GitHub snapshot at V_1.5. 
+* [V_1.3](https://github.com/sparkfun/MIDI_Shield/tree/v1.3) - GitHub snapshot at V_1.3
 
 License Information
 -------------------
-The hardware is released under [Creative Commons ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/).
+
+This product is _**open source**_! 
+
+Please review the LICENSE.md file for license information. 
+
+If you have any questions or concerns on licensing, please contact techsupport@sparkfun.com.
 
 Distributed as-is; no warranty is given.
+
+- Your friends at SparkFun.
