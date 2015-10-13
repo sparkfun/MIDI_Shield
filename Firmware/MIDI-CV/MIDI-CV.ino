@@ -111,13 +111,13 @@ static const uint32_t DAC_CAL = 6826;
  */ 
 void updateCV(uint8_t key)
 {  
-#if VERBOSE
+#if 0
   Serial.print("KEY: ");
   Serial.print(key);
 #endif
   uint32_t val = 400ul + ((key * DAC_CAL)/100ul);
 
-#if VERBOSE  
+#if 0
   val = last_key * 6826ul;
   Serial.print(" VALa: ");
   Serial.print(val, HEX);
