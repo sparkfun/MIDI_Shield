@@ -1,7 +1,7 @@
 SparkFun MIDI Shield
 ====================
 
-[![SparkFun MIDI Shield](https://cdn.sparkfun.com//assets/parts/3/4/1/0/09595-01.jpg)](https://www.sparkfun.com/products/12898)
+[![SparkFun MIDI Shield](https://cdn.sparkfun.com//assets/parts/9/7/9/8/12898-05.jpg)](https://www.sparkfun.com/products/12898)
 
 [*SparkFun MIDI Shield (DEV-12898)*](https://www.sparkfun.com/products/12898)
 
