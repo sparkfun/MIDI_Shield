@@ -24,7 +24,7 @@ Documentation
 Product Versions
 ----------------
 * [DEV-12898](https://www.sparkfun.com/products/12898)- Version 1.5. R3 compatible. Currently live. 
-* [DEV-09595] (https://www.sparkfun.com/products/retired/9595)- Version 1.3. Retired. 
+* [DEV-09595](https://www.sparkfun.com/products/retired/9595)- Version 1.3. Retired. 
 
 Version History
 ---------------
